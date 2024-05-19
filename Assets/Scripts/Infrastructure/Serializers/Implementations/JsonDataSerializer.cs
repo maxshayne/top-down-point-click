@@ -1,5 +1,5 @@
 using System;
-using Infrastructure.DataStorage.Interfaces;
+using Infrastructure.DataStorage;
 using UnityEngine;
 
 namespace Infrastructure.Serializers.Implementations

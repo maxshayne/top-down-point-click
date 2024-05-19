@@ -1,4 +1,4 @@
-﻿using Infrastructure.DataStorage.Interfaces;
+﻿using Infrastructure.DataStorage;
 using Newtonsoft.Json;
 
 namespace Infrastructure.Serializers.Implementations

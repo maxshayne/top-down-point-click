@@ -1,5 +1,5 @@
 ﻿using Game.PlayerInput;
-using Infrastructure.DataStorage.Interfaces;
+using Infrastructure.DataStorage;
 using UnityEngine;
 using UnityEngine.UI;
 using VContainer;

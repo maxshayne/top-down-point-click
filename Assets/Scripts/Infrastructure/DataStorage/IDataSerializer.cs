@@ -1,4 +1,4 @@
-namespace Infrastructure.DataStorage.Interfaces
+namespace Infrastructure.DataStorage
 {
     public interface IDataSerializer
     {

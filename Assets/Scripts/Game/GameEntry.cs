@@ -1,5 +1,5 @@
 using Game.PlayerInput;
-using Infrastructure.DataStorage.Interfaces;
+using Infrastructure.DataStorage;
 using JetBrains.Annotations;
 using VContainer.Unity;
 
@@ -17,9 +17,9 @@ namespace Game
             _playerInputService = playerInputService;
         }
         
-        public void Start()
+        public async void Start()
         {
-            var save = _dataStorage.Load();
+            var save = await _dataStorage.Load();
             _playerInputService.Configure(save);
         }
     }

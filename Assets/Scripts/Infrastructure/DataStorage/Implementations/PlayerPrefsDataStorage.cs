@@ -1,4 +1,4 @@
-using Infrastructure.DataStorage.Interfaces;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace Infrastructure.DataStorage.Implementations
@@ -13,14 +13,15 @@ namespace Infrastructure.DataStorage.Implementations
             _serializer = serializer;
         }
         
-        public void Save(T data)
+        public UniTask Save(T data)
         {
             var serializedData = _serializer.Serialize(data);
             PlayerPrefs.SetString(SaveDataKey, serializedData);
             PlayerPrefs.Save();
+            return new UniTask();
         }
 
-        public T Load()
+        public UniTask<T> Load()
         {
             var stringData = PlayerPrefs.GetString(SaveDataKey, string.Empty);
             if (string.IsNullOrEmpty(stringData))
@@ -28,7 +29,7 @@ namespace Infrastructure.DataStorage.Implementations
                 return default;
             }
             var saveData = _serializer.Deserialize<T>(stringData);
-            return saveData;
+            return new UniTask<T>(saveData);
         }
 
         public void Clear()
