@@ -9,21 +9,15 @@ namespace Game.PlayerInput
     [UsedImplicitly]
     public class PlayerInputService 
     {
-        private Controls _controls;
-        private readonly Queue<Vector3> _pointsQueue = new();
-        private Vector3? _nextTarget;
-        private NavMeshAgent _agent;
-        private readonly NavMeshAgent _player;
-        
-        public PlayerInputService(NavMeshAgent player)
+        public PlayerInputService(NavMeshAgent player, Camera worldCamera)
         {
             _player = player;
+            _worldCamera = worldCamera;
             Configure();
         }
         
         private void Configure()
         {
-            _agent = _player.GetComponent<NavMeshAgent>();
             _controls = new Controls();
             _controls.Main.Move.performed += OnMovePerformed;
             _controls.Enable();
@@ -31,35 +25,53 @@ namespace Game.PlayerInput
 
         private void OnMovePerformed(InputAction.CallbackContext obj)
         {
-            Debug.Log($"click");
-            AddNewPoint();
-        }
-        
-        private void AddNewPoint()
-        {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (!Physics.Raycast(ray, out var hit)) return;
-            var newPos = hit.point;
-            var go = new GameObject().AddComponent<WaypointChecker>();
-            go.Configure(newPos, Callback, _agent.tag);
-            _pointsQueue.Enqueue(newPos); 
-            Debug.Log(_agent.velocity.magnitude);
-            if (_agent.velocity.magnitude > 0) return;
-            Move();
-        }
-        
-        private void Move()
-        {
-            Debug.Log("move");
-            if (_pointsQueue.TryDequeue(out var pos))
-            {
-                _agent.SetDestination(pos);
-            }
+            if (!TryGetHitPosition(out var newPosition)) return;
+            _pathQueue.Enqueue(newPosition); 
+            CreateWaypoint(newPosition);
+            if (IsCharacterMoving()) return;
+            SetNewDestination();
         }
 
-        private void Callback()
+        private bool TryGetHitPosition(out Vector3 pos)
         {
-            Move();
+            pos = Vector3.zero;
+            var ray = _worldCamera.ScreenPointToRay(Input.mousePosition);
+            if (!Physics.Raycast(ray, out var hit)) return false;
+            pos = hit.point;
+            return !hit.collider.CompareTag(ObstacleTag);
         }
+
+        private void CreateWaypoint(Vector3 newPos)
+        {
+            var go = new GameObject().AddComponent<WaypointChecker>();
+            go.Configure(newPos, OnPointReached, _player.tag);
+        }
+
+        private bool IsCharacterMoving()
+        {
+            return _currentTarget.HasValue;
+        }
+
+        private void SetNewDestination()
+        {
+            if (!_pathQueue.TryDequeue(out var pos)) return;
+            _player.SetDestination(pos);
+            _currentTarget = pos;
+        }
+
+        private void OnPointReached()
+        {
+            _currentTarget = null;
+            SetNewDestination();
+        }
+        
+        private const string ObstacleTag = "Obstacle";
+        
+        private readonly Queue<Vector3> _pathQueue = new();
+        private readonly NavMeshAgent _player;
+        private readonly Camera _worldCamera;
+        
+        private Controls _controls;
+        private Vector3? _currentTarget;
     }
 }
