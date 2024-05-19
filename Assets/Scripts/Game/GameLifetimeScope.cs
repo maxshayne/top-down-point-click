@@ -17,14 +17,10 @@ namespace Game
         protected override void Configure(IContainerBuilder builder)
         {
             builder.Register<PlayerInputService>(Lifetime.Scoped);
-            builder.RegisterComponentInHierarchy<UIView>();
+            builder.RegisterComponentInHierarchy<GameUIView>();
             builder.RegisterComponent(m_NavMeshAgent);
             builder.RegisterComponent(m_WorldCamera);
             builder.RegisterEntryPoint<GameEntry>();
-            
-            builder.Register<IDataSerializer, NewtonsoftJsonDataSerializer>(Lifetime.Singleton);
-            builder.Register<IDataStorage<SaveData>, CloudSaveDataStorage<SaveData>>(Lifetime.Singleton);
-            builder.Register<AuthService>(Lifetime.Singleton);
         }
     }
 }
