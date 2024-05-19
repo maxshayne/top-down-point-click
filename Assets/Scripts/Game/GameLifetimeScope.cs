@@ -1,4 +1,7 @@
 using Game.PlayerInput;
+using Infrastructure.DataStorage.Implementations;
+using Infrastructure.DataStorage.Interfaces;
+using Infrastructure.Serializers.Implementations;
 using UnityEngine;
 using UnityEngine.AI;
 using VContainer;
@@ -13,11 +16,13 @@ namespace Game
         
         protected override void Configure(IContainerBuilder builder)
         {
-            builder.RegisterEntryPoint<GameEntry>();
+            builder.Register<IDataSerializer, NewtonsoftJsonDataSerializer>(Lifetime.Singleton);
+            builder.Register<IDataStorage<SaveData>, PlayerPrefsDataStorage<SaveData>>(Lifetime.Singleton);
             builder.Register<PlayerInputService>(Lifetime.Scoped);
+            builder.RegisterComponentInHierarchy<UIView>();
             builder.RegisterComponent(m_NavMeshAgent);
             builder.RegisterComponent(m_WorldCamera);
+            builder.RegisterEntryPoint<GameEntry>();
         }
     }
-
 }
