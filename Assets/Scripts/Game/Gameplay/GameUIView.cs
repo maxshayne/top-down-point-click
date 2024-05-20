@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Game
+namespace Game.Gameplay
 {
     public class GameUIView : MonoBehaviour
     {

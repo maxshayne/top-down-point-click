@@ -5,26 +5,30 @@ using UnityEngine.AI;
 using VContainer;
 using VContainer.Unity;
 
-namespace Game
+namespace Game.Gameplay
 {
     public class GameLifetimeScope : LifetimeScope
     {
-        [SerializeField] private NavMeshAgent m_NavMeshAgent;
-        [SerializeField] private Camera m_WorldCamera;
-        
         protected override void Configure(IContainerBuilder builder)
         {
-            builder.Register<PlayerInputService>(Lifetime.Scoped);
             builder.RegisterComponentInHierarchy<GameUIView>();
-            builder.RegisterComponent(m_NavMeshAgent);
-            builder.RegisterComponent(m_WorldCamera);
             builder.RegisterEntryPoint<GameEntry>();
-            builder.RegisterEntryPoint<GameLevelConfigurator>();
+            builder.Register<GameLevelConfigurator>(Lifetime.Scoped);
             builder.Register<PlayerLevelConfigurator>(Lifetime.Scoped);
+            RegisterGameServices(builder);
             RegisterConfigData(builder);
         }
 
-        private static void RegisterConfigData(IContainerBuilder builder)
+        private void RegisterGameServices(IContainerBuilder builder)
+        {
+            builder.RegisterComponent(m_NavMeshAgent);
+            builder.RegisterComponent(m_WorldCamera);
+            builder.Register<PlayerInputService>(Lifetime.Scoped);
+            builder.Register<IPlayerInput, DefaultPlayerInput>(Lifetime.Scoped);
+            builder.Register<IPlayerMovement, NavMeshAgentPlayerMovement>(Lifetime.Scoped);
+        }
+
+        private void RegisterConfigData(IContainerBuilder builder)
         {
             builder.Register(
                 resolver => resolver.Resolve<ConfigurationData>().LevelConfiguration,
@@ -36,5 +40,8 @@ namespace Game
                 resolver => resolver.Resolve<ConfigurationData>().InputConfiguration,
                 Lifetime.Scoped);
         }
+        
+        [SerializeField] private NavMeshAgent m_NavMeshAgent;
+        [SerializeField] private Camera m_WorldCamera;
     }
 }

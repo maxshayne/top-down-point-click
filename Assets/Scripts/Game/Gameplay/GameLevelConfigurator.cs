@@ -5,17 +5,17 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 using VContainer.Unity;
 
-namespace Game
+namespace Game.Gameplay
 {
     [UsedImplicitly]
-    public class GameLevelConfigurator : IInitializable
+    public class GameLevelConfigurator
     {
         public GameLevelConfigurator(LevelConfiguration levelConfiguration)
         {
             _levelConfiguration = levelConfiguration;
         }
 
-        public async void Initialize()
+        public async UniTask LoadLevel()
         {
             var handle = await Addressables.LoadAssetAsync<GameObject>(_levelConfiguration.LevelAsset);
             Object.Instantiate(handle, null);

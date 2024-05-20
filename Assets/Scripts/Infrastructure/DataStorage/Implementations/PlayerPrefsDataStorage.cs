@@ -5,9 +5,6 @@ namespace Infrastructure.DataStorage.Implementations
 {
     public class PlayerPrefsDataStorage<T> : IDataStorage<T>
     {
-        private readonly IDataSerializer _serializer;
-        private const string SaveDataKey = "savedata";
-
         public PlayerPrefsDataStorage(IDataSerializer serializer)
         {
             _serializer = serializer;
@@ -36,5 +33,8 @@ namespace Infrastructure.DataStorage.Implementations
         {
             PlayerPrefs.DeleteAll();
         }
+        
+        private readonly IDataSerializer _serializer;
+        private const string SaveDataKey = "savedata";
     }
 }
