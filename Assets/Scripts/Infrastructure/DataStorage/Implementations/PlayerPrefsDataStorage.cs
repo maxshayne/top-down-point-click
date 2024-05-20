@@ -10,7 +10,6 @@ namespace Infrastructure.DataStorage.Implementations
 
         public PlayerPrefsDataStorage(IDataSerializer serializer)
         {
-            Debug.LogError(nameof(this.ToString));
             _serializer = serializer;
         }
         

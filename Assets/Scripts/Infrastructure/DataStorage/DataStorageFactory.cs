@@ -25,7 +25,7 @@ namespace Infrastructure.DataStorage
 
         public IDataStorage<SaveData> Create()
         {
-            return _gameConfiguration.GetSavingSystem() switch
+            return _gameConfiguration.GetDataStorageType() switch
             {
                 DataStorageType.Local => new PlayerPrefsDataStorage<SaveData>(_dataSerializer),
                 DataStorageType.Cloud => new CloudSaveDataStorage<SaveData>(_authService, _dataSerializer),

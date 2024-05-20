@@ -8,7 +8,7 @@ using VContainer.Unity;
 namespace Game
 {
     [UsedImplicitly]
-    public class GameEntry : IStartable //todo: check how many entries actually needed
+    public class GameEntry : IStartable
     {
         public GameEntry(
             ISceneLoader sceneLoader,
@@ -23,18 +23,18 @@ namespace Game
             uiView.SetCallback(OnExitCallback);
         }
 
-        private async void OnExitCallback()
-        {
-            var saveState = _playerInputService.SavePlayerState();
-            await _dataStorage.Save(saveState);
-            _sceneLoader.LoadScene(SceneKey.Menu);
-        }
-
         public async void Start()
         {
             var save = await _dataStorage.Load();
             await UniTask.WaitUntil(() => _sceneLoader.IsSceneLoaded);
             _playerInputService.Configure(save);
+        }
+        
+        private async void OnExitCallback()
+        {
+            var saveState = _playerInputService.SavePlayerState();
+            await _dataStorage.Save(saveState);
+            _sceneLoader.LoadScene(SceneKey.Menu);
         }
 
         private readonly PlayerInputService _playerInputService;

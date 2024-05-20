@@ -16,7 +16,6 @@ namespace Infrastructure.DataStorage.Implementations
 
         public CloudSaveDataStorage(AuthService authService, IDataSerializer dataSerializer)
         {
-            Debug.LogError(nameof(this.ToString));
             _authService = authService;
             _dataSerializer = dataSerializer;
             _authService.Initialize();

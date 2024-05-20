@@ -6,7 +6,7 @@ namespace Game.Root.Configuration
     [Serializable]
     public class GameConfiguration
     {
-        public DataStorageType GetSavingSystem()
+        public DataStorageType GetDataStorageType()
         {
             return m_SavingSystem;
         }

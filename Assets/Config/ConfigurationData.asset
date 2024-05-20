@@ -13,7 +13,19 @@ MonoBehaviour:
   m_Name: ConfigurationData
   m_EditorClassIdentifier: 
   m_GameConfiguration:
-    m_SavingSystem: 0
+    m_SavingSystem: 1
+  m_LevelConfiguration:
+    m_LevelAsset:
+      m_AssetGUID: 607f397bc1bd9b748a1c530ebc2d9bea
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+    m_PlayerAsset:
+      m_AssetGUID: 
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+    m_ObstacleTagName: Obstacle
   m_LoadingScreen:
     m_AssetGUID: ad4aee5d9a9831940aa3e13f67a016e1
     m_SubObjectName: 

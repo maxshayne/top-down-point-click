@@ -1,7 +1,5 @@
 using Game.PlayerInput;
-using Infrastructure.DataStorage;
-using Infrastructure.DataStorage.Implementations;
-using Infrastructure.Serializers.Implementations;
+using Game.Root.Configuration;
 using UnityEngine;
 using UnityEngine.AI;
 using VContainer;
@@ -21,6 +19,10 @@ namespace Game
             builder.RegisterComponent(m_NavMeshAgent);
             builder.RegisterComponent(m_WorldCamera);
             builder.RegisterEntryPoint<GameEntry>();
+            builder.RegisterEntryPoint<GameLevelConfigurator>();
+            builder.Register(
+                resolver => resolver.Resolve<ConfigurationData>().LevelConfiguration,
+                Lifetime.Scoped); 
         }
     }
 }
