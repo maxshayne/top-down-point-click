@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
+using Game.Root.Configuration;
 using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -22,6 +23,7 @@ namespace Game.Root.SceneManagement
             if (!_sceneMap.TryGetValue(scene, out var path))
             {
                 Debug.LogError($"Can't load scene with key [{scene}]! SceneMap doesn't contains this path");
+                return;
             }
 
             IsSceneLoaded = false;

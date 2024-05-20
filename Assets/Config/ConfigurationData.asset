@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84b34af523f4491d872963562b28261a, type: 3}
   m_Name: ConfigurationData
   m_EditorClassIdentifier: 
+  m_GameConfiguration:
+    m_SavingSystem: 0
   m_LoadingScreen:
     m_AssetGUID: ad4aee5d9a9831940aa3e13f67a016e1
     m_SubObjectName: 
