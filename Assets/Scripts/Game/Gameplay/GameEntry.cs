@@ -1,4 +1,6 @@
+using System;
 using Cysharp.Threading.Tasks;
+using EventBusSystem;
 using Game.Data;
 using Game.PlayerInput;
 using Game.Root;
@@ -9,7 +11,7 @@ using VContainer.Unity;
 namespace Game.Gameplay
 {
     [UsedImplicitly]
-    public class GameEntry : IStartable
+    public class GameEntry : IStartable, IExitListener, IDisposable
     {
         public GameEntry(
             ISceneLoader sceneLoader,
@@ -18,8 +20,7 @@ namespace Game.Gameplay
             GameLevelConfigurator gameLevelConfigurator,
             PlayerLevelConfigurator playerLevelConfigurator,
             PlayerInputService playerInputService,
-            IPlayerMovement playerMovement,
-            GameUIView uiView)
+            IPlayerMovement playerMovement)
         {
             _sceneLoader = sceneLoader;
             _dataStorage = dataStorage;
@@ -28,8 +29,6 @@ namespace Game.Gameplay
             _playerLevelConfigurator = playerLevelConfigurator;
             _playerInputService = playerInputService;
             _playerMovement = playerMovement;
-
-            uiView.SetCallback(OnExitCallback);
         }
 
         public async void Start()
@@ -40,6 +39,17 @@ namespace Game.Gameplay
                 _gameLevelConfigurator.LoadLevel());
             _playerLevelConfigurator.Configure();
             _playerInputService.Configure(save);
+            EventBus.Subscribe(this);
+        }
+        
+        public void CallExit()
+        {
+            OnExitCallback();
+        }
+        
+        public void Dispose()
+        {
+            EventBus.Unsubscribe(this);
         }
 
         private async void OnExitCallback()

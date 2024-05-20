@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using EventBusSystem;
 using Game.Data;
 using Game.Root.Configuration;
 using Infrastructure.DataStorage;
@@ -9,7 +11,7 @@ using UnityEngine;
 namespace Game.PlayerInput
 {
     [UsedImplicitly]
-    public class PlayerInputService : IInputListener, IBuilderAgent<SaveData>
+    public class PlayerInputService : IInputListener, IBuilderAgent<SaveData>, IWaypointReachHandler, IDisposable
     {
         public PlayerInputService(
             InputConfiguration inputConfiguration,
@@ -18,8 +20,10 @@ namespace Game.PlayerInput
         {
             _playerMovement = playerMovement;
             _inputConfiguration = inputConfiguration;
-            
+            _playerInput = playerInput;
+
             playerInput.Subscribe(this);
+            EventBus.Subscribe(this);
         }
         
         public void Configure(SaveData saveData)
@@ -39,6 +43,18 @@ namespace Game.PlayerInput
         {
             state.Points = _pathQueue.ToList();
             return state;
+        }
+        
+        public void WaypointReached()
+        {
+            _playerMovement.ReachDestination();
+            SetNewDestinationFromQueue();
+        }
+        
+        public void Dispose()
+        {
+            _playerInput.Unsubscribe(this);
+            EventBus.Unsubscribe(this);
         }
         
         private void StartMoveIfPossible()
@@ -67,7 +83,7 @@ namespace Game.PlayerInput
         {
             Debug.LogWarning($"create waypoint in {newPos}");
             var go = new GameObject().AddComponent<WaypointChecker>();
-            go.Configure(newPos, OnPointReached, PlayerTag);
+            go.Configure(newPos, PlayerTag);
         }
 
         private bool IsCharacterMoving() => _playerMovement.IsMoving();
@@ -79,19 +95,15 @@ namespace Game.PlayerInput
                 Debug.LogWarning($"cant get next point, queue count is {_pathQueue.Count}");
                 return;
             }
+            Debug.Log($" get next point{pos.ToString()}");
             _playerMovement.CreateDestination(pos);
-        }
-
-        private void OnPointReached()
-        {
-            _playerMovement.ReachDestination();
-            SetNewDestinationFromQueue();
         }
         
         private const string PlayerTag = "Player";
 
         private readonly IPlayerMovement _playerMovement;
         private readonly InputConfiguration _inputConfiguration;
+        private readonly IPlayerInput _playerInput;
         private readonly Queue<Vector3> _pathQueue = new();
     }
 }

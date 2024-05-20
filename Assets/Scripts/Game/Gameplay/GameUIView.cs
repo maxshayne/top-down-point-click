@@ -1,4 +1,4 @@
-﻿using System;
+﻿using EventBusSystem;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -6,11 +6,16 @@ namespace Game.Gameplay
 {
     public class GameUIView : MonoBehaviour
     {
-        public void SetCallback(Action onExitCallback)
+        private void Awake()
         {
-            m_ExitButton.onClick.AddListener(() => onExitCallback?.Invoke());
+            m_ExitButton.onClick.AddListener(OnExit);
         }
         
+        private void OnExit()
+        {
+            EventBus.RaiseEvent<IExitListener>(h => h.CallExit());
+        }
+
         [SerializeField] private Button m_ExitButton;
     }
 }
