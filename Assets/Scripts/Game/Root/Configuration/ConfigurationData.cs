@@ -10,10 +10,12 @@ namespace Game.Root.Configuration
         public GameConfiguration GameConfiguration => m_GameConfiguration;
         public LevelConfiguration LevelConfiguration => m_LevelConfiguration;
         public PlayerConfiguration PlayerConfiguration => m_PlayerConfiguration;
+        public InputConfiguration InputConfiguration => m_InputConfiguration;
 
         [SerializeField] private GameConfiguration m_GameConfiguration;
         [SerializeField] private LevelConfiguration m_LevelConfiguration;
         [SerializeField] private PlayerConfiguration m_PlayerConfiguration;
+        [SerializeField] private InputConfiguration m_InputConfiguration;
         [SerializeField] private AssetReference m_LoadingScreen;
     }
 }
