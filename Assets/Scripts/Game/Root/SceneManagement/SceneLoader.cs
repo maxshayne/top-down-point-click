@@ -20,6 +20,7 @@ namespace Game.Root.SceneManagement
 
         public async void LoadScene(SceneKey scene)
         {
+            await UniTask.WaitUntil(() => _loadingCanvasGroup != null);
             if (!_sceneMap.TryGetValue(scene, out var path))
             {
                 Debug.LogError($"Can't load scene with key [{scene}]! SceneMap doesn't contains this path");
@@ -37,9 +38,9 @@ namespace Game.Root.SceneManagement
             IsSceneLoaded = true;
         }
         
-        private void Configure()
+        private async void Configure()
         {
-            var cg = _configurationData.LoadingScreen.LoadAssetAsync<GameObject>().WaitForCompletion();
+            var cg = await _configurationData.LoadingScreen.LoadAssetAsync<GameObject>();
             _loadingCanvasGroup = Object.Instantiate(cg.GetComponent<CanvasGroup>(), null);
             _loadingCanvasGroup.alpha = 0;
             Object.DontDestroyOnLoad(_loadingCanvasGroup);

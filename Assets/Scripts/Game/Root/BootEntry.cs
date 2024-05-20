@@ -1,7 +1,9 @@
-﻿using VContainer.Unity;
+﻿using JetBrains.Annotations;
+using VContainer.Unity;
 
 namespace Game.Root
 {
+    [UsedImplicitly]
     public class BootEntry : IInitializable
     {
         private readonly ISceneLoader _sceneLoader;
