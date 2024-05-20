@@ -9,12 +9,7 @@ namespace Infrastructure.Serializers.Implementations
     {
         public string Serialize<T>(T data)
         {
-            return JsonConvert.SerializeObject(data,
-                Formatting.Indented,
-                new JsonSerializerSettings
-                {
-                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-                });
+            return JsonConvert.SerializeObject(data);
         }
 
         public T Deserialize<T>(string stringData)
