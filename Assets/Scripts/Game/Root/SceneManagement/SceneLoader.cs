@@ -39,8 +39,6 @@ namespace Game.Root.SceneManagement
         
         private void Configure()
         {
-            Debug.LogError($"Configure");
-
             var cg = _configurationData.LoadingScreen.LoadAssetAsync<GameObject>().WaitForCompletion();
             _loadingCanvasGroup = Object.Instantiate(cg.GetComponent<CanvasGroup>(), null);
             _loadingCanvasGroup.alpha = 0;

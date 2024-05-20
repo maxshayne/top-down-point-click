@@ -1,10 +1,8 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 namespace Game.PlayerInput
@@ -17,12 +15,12 @@ namespace Game.PlayerInput
             _player = player;
             _worldCamera = worldCamera;
             _controls = new Controls();
-            _controls.Main.Move.started += OnMovePerformed;
         }
         
         public void Configure(SaveData saveData)
         {
             RestorePlayerState(saveData);
+            _controls.Main.Move.started += OnMovePerformed;
             _controls.Enable();
             if (!_currentTarget.HasValue) return;
             CreateWaypoint(_currentTarget.Value);
@@ -85,7 +83,7 @@ namespace Game.PlayerInput
 
         private void CreateWaypoint(Vector3 newPos)
         {
-            Debug.LogError($"create waypoint in {newPos}");
+            Debug.LogWarning($"create waypoint in {newPos}");
 
             var go = new GameObject().AddComponent<WaypointChecker>();
             go.Configure(newPos, OnPointReached, _player.tag);
@@ -108,14 +106,12 @@ namespace Game.PlayerInput
 
         private void SetDestinationPoint(Vector3 pos)
         {
-            var result =_player.SetDestination(pos);
-            Debug.LogError($"setdestination to pos {pos},  result - {result}");
+            _player.SetDestination(pos);
             _currentTarget = pos;
         }
 
         private void OnPointReached()
         {
-            Debug.LogError($"OnPointReached");
             _currentTarget = null;
             SetNewDestinationFromQueue();
         }

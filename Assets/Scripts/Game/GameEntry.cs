@@ -13,11 +13,13 @@ namespace Game
         public GameEntry(
             ISceneLoader sceneLoader,
             IDataStorage<SaveData> dataStorage,
+            PlayerLevelConfigurator playerLevelConfigurator,
             PlayerInputService playerInputService,
             GameUIView uiView)
         {
             _sceneLoader = sceneLoader;
             _dataStorage = dataStorage;
+            _playerLevelConfigurator = playerLevelConfigurator;
             _playerInputService = playerInputService;
 
             uiView.SetCallback(OnExitCallback);
@@ -27,6 +29,7 @@ namespace Game
         {
             var save = await _dataStorage.Load();
             await UniTask.WaitUntil(() => _sceneLoader.IsSceneLoaded);
+            _playerLevelConfigurator.Configure();
             _playerInputService.Configure(save);
         }
         
@@ -40,5 +43,6 @@ namespace Game
         private readonly PlayerInputService _playerInputService;
         private readonly ISceneLoader _sceneLoader;
         private readonly IDataStorage<SaveData> _dataStorage;
+        private readonly PlayerLevelConfigurator _playerLevelConfigurator;
     }
 }

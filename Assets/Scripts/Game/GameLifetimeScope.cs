@@ -20,8 +20,12 @@ namespace Game
             builder.RegisterComponent(m_WorldCamera);
             builder.RegisterEntryPoint<GameEntry>();
             builder.RegisterEntryPoint<GameLevelConfigurator>();
+            builder.Register<PlayerLevelConfigurator>(Lifetime.Scoped);
             builder.Register(
                 resolver => resolver.Resolve<ConfigurationData>().LevelConfiguration,
+                Lifetime.Scoped); 
+            builder.Register(
+                resolver => resolver.Resolve<ConfigurationData>().PlayerConfiguration,
                 Lifetime.Scoped); 
         }
     }
