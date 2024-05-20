@@ -1,5 +1,4 @@
-﻿using Game;
-using JetBrains.Annotations;
+﻿using JetBrains.Annotations;
 
 namespace Infrastructure.DataStorage
 {

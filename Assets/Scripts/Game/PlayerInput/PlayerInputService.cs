@@ -43,10 +43,10 @@ namespace Game.PlayerInput
         
         private void StartMoveIfPossible()
         {
+            if (!_playerMovement.IsMoving()) return;
             var pos = _playerMovement.CurrentTarget;
-            if (!pos.HasValue) return;
-            _playerMovement.CreateDestination(pos.Value);
-            CreateWaypoint(pos.Value);
+            _playerMovement.CreateDestination(pos);
+            CreateWaypoint(pos);
         }
 
         private void RestorePlayerState(SaveData saveData)

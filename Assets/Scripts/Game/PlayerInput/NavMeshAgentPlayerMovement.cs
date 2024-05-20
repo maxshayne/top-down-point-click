@@ -13,19 +13,24 @@ namespace Game.PlayerInput
             _navMeshAgent = navMeshAgent;
         }
 
-        public Vector3? CurrentTarget => _currentTarget;
+        public Vector3 CurrentTarget
+        {
+            get;
+            private set;
+        }
 
         public void CreateDestination(Vector3 position)
         {
+            _hasTarget = true;
             _navMeshAgent.SetDestination(position);
-            _currentTarget = position;
+            CurrentTarget = position;
         }
 
-        public bool IsMoving() => CurrentTarget.HasValue;
+        public bool IsMoving() => _hasTarget;
 
         public void ReachDestination()
         {
-            _currentTarget = null;
+            _hasTarget = false;
         }
 
         public void SetTransformValues(SaveData saveData)
@@ -34,33 +39,22 @@ namespace Game.PlayerInput
             tr.localPosition = saveData.LocalPosition;
             tr.localEulerAngles  = saveData.LocalEulerRotation;
             tr.localScale  = saveData.LocalScale;
-            _currentTarget = saveData.LastPoint;
+            CurrentTarget = saveData.LastPoint;
+            _hasTarget = saveData.HasLastPoint;
         }
-        
-        public SaveData SavePlayerState()
-        {
-            var tr = _navMeshAgent.transform;
-            var state = new SaveData
-            {
-                LastPoint = _currentTarget,
-                LocalPosition = tr.localPosition,
-                LocalEulerRotation = tr.localEulerAngles,
-                LocalScale = tr.localScale,
-            };
-            return state;
-        }
-        
+
         public SaveData UpdateState(SaveData state)
         {
             var tr = _navMeshAgent.transform;
-            state.LastPoint = _currentTarget;
+            state.LastPoint = CurrentTarget;
             state.LocalPosition = tr.localPosition;
             state.LocalEulerRotation = tr.localEulerAngles;
-            state. LocalScale = tr.localScale;
+            state.LocalScale = tr.localScale;
+            state.HasLastPoint = _hasTarget;
             return state;
         }
-        
+
         private readonly NavMeshAgent _navMeshAgent;
-        private Vector3? _currentTarget;
+        private bool _hasTarget;
     }
 }
