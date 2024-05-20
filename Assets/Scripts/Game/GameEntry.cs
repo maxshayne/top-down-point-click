@@ -13,14 +13,18 @@ namespace Game
         public GameEntry(
             ISceneLoader sceneLoader,
             IDataStorage<SaveData> dataStorage,
+            DataBuilder<SaveData> saveDataBuilder,
             PlayerLevelConfigurator playerLevelConfigurator,
             PlayerInputService playerInputService,
+            IPlayerMovement playerMovement,
             GameUIView uiView)
         {
             _sceneLoader = sceneLoader;
             _dataStorage = dataStorage;
+            _saveDataBuilder = saveDataBuilder;
             _playerLevelConfigurator = playerLevelConfigurator;
             _playerInputService = playerInputService;
+            _playerMovement = playerMovement;
 
             uiView.SetCallback(OnExitCallback);
         }
@@ -32,17 +36,23 @@ namespace Game
             _playerLevelConfigurator.Configure();
             _playerInputService.Configure(save);
         }
-        
+
         private async void OnExitCallback()
         {
-            var saveState = _playerInputService.SavePlayerState();
-            await _dataStorage.Save(saveState);
+            var saveData = _saveDataBuilder
+                .CreateEmptyState()
+                .UpdateState(_playerMovement)
+                .UpdateState(_playerInputService)
+                .Build();
+            await _dataStorage.Save(saveData);
             _sceneLoader.LoadScene(SceneKey.Menu);
         }
 
         private readonly PlayerInputService _playerInputService;
+        private readonly IPlayerMovement _playerMovement;
         private readonly ISceneLoader _sceneLoader;
         private readonly IDataStorage<SaveData> _dataStorage;
+        private readonly DataBuilder<SaveData> _saveDataBuilder;
         private readonly PlayerLevelConfigurator _playerLevelConfigurator;
     }
 }

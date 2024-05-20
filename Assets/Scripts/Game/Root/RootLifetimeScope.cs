@@ -24,6 +24,7 @@ namespace Game.Root
                 var factory = container.Resolve<DataStorageFactory>();
                 return factory.Create();
             }, Lifetime.Singleton);
+            builder.Register<DataBuilder<SaveData>>(Lifetime.Singleton);
             builder.Register<AuthService>(Lifetime.Singleton);
             builder.Register<ISceneLoader, SceneLoader>(Lifetime.Singleton);
             builder.RegisterEntryPoint<BootEntry>();
