@@ -1,22 +1,36 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace Game.PlayerInput
 {
-    public class DefaultPlayerInput : IPlayerInput
+    [UsedImplicitly]
+    public class DefaultPlayerInput : IPlayerInput, IDisposable
     {
         public DefaultPlayerInput(Camera worldCamera)
         {
             _worldCamera = worldCamera;
-            var controls = new Controls();
-            controls.Main.Move.started += OnMovePerformed;
-            controls.Enable();
+            _controls = new Controls();
+            _controls.Main.Move.started += OnMovePerformed;
+            _controls.Enable();
         }
         
         public void Subscribe(IInputListener listener)
         {
             _listeners.Add(listener);
+        }
+        
+        public void Unsubscribe(IInputListener listener)
+        {
+            _listeners.Remove(listener);
+        }
+        
+        public void Dispose()
+        {
+            _controls.Disable();
+            _controls.Dispose();
         }
         
         private void OnMovePerformed(InputAction.CallbackContext obj)
@@ -47,5 +61,6 @@ namespace Game.PlayerInput
         private const string PlayerTag = "Player";
         private const string ObstacleTag = "Obstacle";
         private readonly List<IInputListener> _listeners = new();
+        private readonly Controls _controls;
     }
 }

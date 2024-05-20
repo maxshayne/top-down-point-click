@@ -23,8 +23,9 @@ namespace Game.Gameplay
         {
             builder.RegisterComponent(m_NavMeshAgent);
             builder.RegisterComponent(m_WorldCamera);
-            builder.Register<PlayerInputService>(Lifetime.Scoped);
+            builder.Register<PlayerMovementController>(Lifetime.Scoped);
             builder.Register<IPlayerInput, DefaultPlayerInput>(Lifetime.Scoped);
+            builder.Register<IPathProvider, WaypointsProvider>(Lifetime.Scoped);
             builder.Register<IPlayerMovement, NavMeshAgentPlayerMovement>(Lifetime.Scoped);
         }
 

@@ -1,4 +1,6 @@
+using System;
 using Cysharp.Threading.Tasks;
+using EventBusSystem;
 using Game.Data;
 using Game.PlayerInput;
 using Game.Root;
@@ -9,7 +11,7 @@ using VContainer.Unity;
 namespace Game.Gameplay
 {
     [UsedImplicitly]
-    public class GameEntry : IStartable
+    public class GameEntry : IStartable, IExitListener, IDisposable
     {
         public GameEntry(
             ISceneLoader sceneLoader,
@@ -17,19 +19,18 @@ namespace Game.Gameplay
             DataBuilder<SaveData> saveDataBuilder,
             GameLevelConfigurator gameLevelConfigurator,
             PlayerLevelConfigurator playerLevelConfigurator,
-            PlayerInputService playerInputService,
-            IPlayerMovement playerMovement,
-            GameUIView uiView)
+            PlayerMovementController playerMovementController,
+            IPathProvider pathProvider,
+            IPlayerMovement playerMovement)
         {
             _sceneLoader = sceneLoader;
             _dataStorage = dataStorage;
             _saveDataBuilder = saveDataBuilder;
             _gameLevelConfigurator = gameLevelConfigurator;
             _playerLevelConfigurator = playerLevelConfigurator;
-            _playerInputService = playerInputService;
+            _playerMovementController = playerMovementController;
+            _pathProvider = pathProvider;
             _playerMovement = playerMovement;
-
-            uiView.SetCallback(OnExitCallback);
         }
 
         public async void Start()
@@ -39,7 +40,18 @@ namespace Game.Gameplay
                 UniTask.WaitUntil(() => _sceneLoader.IsSceneLoaded),
                 _gameLevelConfigurator.LoadLevel());
             _playerLevelConfigurator.Configure();
-            _playerInputService.Configure(save);
+            _playerMovementController.Configure(save);
+            EventBus.Subscribe(this);
+        }
+        
+        public void CallExit()
+        {
+            OnExitCallback();
+        }
+        
+        public void Dispose()
+        {
+            EventBus.Unsubscribe(this);
         }
 
         private async void OnExitCallback()
@@ -47,13 +59,14 @@ namespace Game.Gameplay
             var saveData = _saveDataBuilder
                 .CreateEmptyState()
                 .UpdateState(_playerMovement)
-                .UpdateState(_playerInputService)
+                .UpdateState(_pathProvider)
                 .Build();
             await _dataStorage.Save(saveData);
             _sceneLoader.LoadScene(SceneKey.Menu);
         }
 
-        private readonly PlayerInputService _playerInputService;
+        private readonly PlayerMovementController _playerMovementController;
+        private readonly IPathProvider _pathProvider;
         private readonly IPlayerMovement _playerMovement;
         private readonly ISceneLoader _sceneLoader;
         private readonly IDataStorage<SaveData> _dataStorage;
