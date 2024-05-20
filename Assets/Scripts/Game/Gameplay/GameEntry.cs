@@ -19,7 +19,8 @@ namespace Game.Gameplay
             DataBuilder<SaveData> saveDataBuilder,
             GameLevelConfigurator gameLevelConfigurator,
             PlayerLevelConfigurator playerLevelConfigurator,
-            PlayerInputService playerInputService,
+            PlayerMovementController playerMovementController,
+            IPathProvider pathProvider,
             IPlayerMovement playerMovement)
         {
             _sceneLoader = sceneLoader;
@@ -27,7 +28,8 @@ namespace Game.Gameplay
             _saveDataBuilder = saveDataBuilder;
             _gameLevelConfigurator = gameLevelConfigurator;
             _playerLevelConfigurator = playerLevelConfigurator;
-            _playerInputService = playerInputService;
+            _playerMovementController = playerMovementController;
+            _pathProvider = pathProvider;
             _playerMovement = playerMovement;
         }
 
@@ -38,7 +40,7 @@ namespace Game.Gameplay
                 UniTask.WaitUntil(() => _sceneLoader.IsSceneLoaded),
                 _gameLevelConfigurator.LoadLevel());
             _playerLevelConfigurator.Configure();
-            _playerInputService.Configure(save);
+            _playerMovementController.Configure(save);
             EventBus.Subscribe(this);
         }
         
@@ -57,13 +59,14 @@ namespace Game.Gameplay
             var saveData = _saveDataBuilder
                 .CreateEmptyState()
                 .UpdateState(_playerMovement)
-                .UpdateState(_playerInputService)
+                .UpdateState(_pathProvider)
                 .Build();
             await _dataStorage.Save(saveData);
             _sceneLoader.LoadScene(SceneKey.Menu);
         }
 
-        private readonly PlayerInputService _playerInputService;
+        private readonly PlayerMovementController _playerMovementController;
+        private readonly IPathProvider _pathProvider;
         private readonly IPlayerMovement _playerMovement;
         private readonly ISceneLoader _sceneLoader;
         private readonly IDataStorage<SaveData> _dataStorage;

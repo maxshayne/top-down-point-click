@@ -24,6 +24,7 @@ namespace Game.PlayerInput
             _hasTarget = true;
             _navMeshAgent.SetDestination(position);
             CurrentTarget = position;
+            CreateWaypoint(position);
         }
 
         public bool IsMoving() => _hasTarget;
@@ -33,7 +34,7 @@ namespace Game.PlayerInput
             _hasTarget = false;
         }
 
-        public void SetTransformValues(SaveData saveData)
+        public void RestoreData(SaveData saveData)
         {
             var tr = _navMeshAgent.transform;
             tr.localPosition = saveData.LocalPosition;
@@ -53,6 +54,15 @@ namespace Game.PlayerInput
             state.HasLastPoint = _hasTarget;
             return state;
         }
+        
+        private void CreateWaypoint(Vector3 newPos)
+        {
+            Debug.Log($"create waypoint in {newPos}");
+            var go = new GameObject().AddComponent<WaypointChecker>();
+            go.Configure(newPos, PlayerTag);
+        }
+
+        private const string PlayerTag = "Player";
 
         private readonly NavMeshAgent _navMeshAgent;
         private bool _hasTarget;

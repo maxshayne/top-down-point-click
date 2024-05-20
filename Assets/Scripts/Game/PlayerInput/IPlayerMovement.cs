@@ -10,6 +10,6 @@ namespace Game.PlayerInput
         void CreateDestination(Vector3 position);
         bool IsMoving();
         void ReachDestination();
-        void SetTransformValues(SaveData saveData);
+        void RestoreData(SaveData saveData);
     }
 }
