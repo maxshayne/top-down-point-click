@@ -1,10 +1,9 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
+using Game.Root.Configuration;
 using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 namespace Game.PlayerInput
@@ -12,17 +11,18 @@ namespace Game.PlayerInput
     [UsedImplicitly]
     public class PlayerInputService
     {
-        public PlayerInputService(NavMeshAgent player, Camera worldCamera)
+        public PlayerInputService(NavMeshAgent player, Camera worldCamera, InputConfiguration inputConfiguration)
         {
             _player = player;
             _worldCamera = worldCamera;
+            _inputConfiguration = inputConfiguration;
             _controls = new Controls();
-            _controls.Main.Move.started += OnMovePerformed;
         }
         
         public void Configure(SaveData saveData)
         {
             RestorePlayerState(saveData);
+            _controls.Main.Move.started += OnMovePerformed;
             _controls.Enable();
             if (!_currentTarget.HasValue) return;
             CreateWaypoint(_currentTarget.Value);
@@ -51,20 +51,22 @@ namespace Game.PlayerInput
             tr.localEulerAngles  = saveData.LocalEulerRotation;
             tr.localScale  = saveData.LocalScale;
             _currentTarget = saveData.LastPoint;
-            saveData.Points.ForEach(x =>
-            {
-                _pathQueue.Enqueue(x);
-                CreateWaypoint(x);
-            });
+            saveData.Points.ForEach(AddPointToQueue);
         }
 
         private void OnMovePerformed(InputAction.CallbackContext obj)
         {
             if (!TryGetHitPosition(out var newPosition)) return;
-            _pathQueue.Enqueue(newPosition); 
-            CreateWaypoint(newPosition);
+            AddPointToQueue(newPosition);
             if (IsCharacterMoving()) return;
             SetNewDestinationFromQueue();
+        }
+        
+        private void AddPointToQueue(Vector3 position)
+        {
+            if (_pathQueue.Count >= _inputConfiguration.MaxPointsQueue) return;
+            _pathQueue.Enqueue(position);
+            CreateWaypoint(position);
         }
 
         private bool TryGetHitPosition(out Vector3 pos)
@@ -85,22 +87,19 @@ namespace Game.PlayerInput
 
         private void CreateWaypoint(Vector3 newPos)
         {
-            Debug.LogError($"create waypoint in {newPos}");
+            Debug.LogWarning($"create waypoint in {newPos}");
 
             var go = new GameObject().AddComponent<WaypointChecker>();
             go.Configure(newPos, OnPointReached, _player.tag);
         }
 
-        private bool IsCharacterMoving()
-        {
-            return _currentTarget.HasValue;
-        }
+        private bool IsCharacterMoving() => _currentTarget.HasValue;
 
         private void SetNewDestinationFromQueue()
         {
             if (!_pathQueue.TryDequeue(out var pos))
             {
-                Debug.LogError($"cant get next point, queue count is {_pathQueue.Count}");
+                Debug.LogWarning($"cant get next point, queue count is {_pathQueue.Count}");
                 return;
             }
             SetDestinationPoint(pos);
@@ -108,14 +107,12 @@ namespace Game.PlayerInput
 
         private void SetDestinationPoint(Vector3 pos)
         {
-            var result =_player.SetDestination(pos);
-            Debug.LogError($"setdestination to pos {pos},  result - {result}");
+            _player.SetDestination(pos);
             _currentTarget = pos;
         }
 
         private void OnPointReached()
         {
-            Debug.LogError($"OnPointReached");
             _currentTarget = null;
             SetNewDestinationFromQueue();
         }
@@ -124,6 +121,7 @@ namespace Game.PlayerInput
         
         private readonly NavMeshAgent _player;
         private readonly Camera _worldCamera;
+        private readonly InputConfiguration _inputConfiguration;
         private readonly Controls _controls;
         private readonly Queue<Vector3> _pathQueue = new();
         

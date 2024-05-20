@@ -1,4 +1,5 @@
-﻿using Game.Root.SceneManagement;
+﻿using Game.Root.Configuration;
+using Game.Root.SceneManagement;
 using Infrastructure.DataStorage;
 using Infrastructure.DataStorage.Implementations;
 using Infrastructure.Serializers.Implementations;
@@ -14,11 +15,17 @@ namespace Game.Root
         
         protected override void Configure(IContainerBuilder builder)
         {
+            builder.RegisterInstance(m_ConfigurationData);
+            builder.RegisterInstance(m_ConfigurationData.GameConfiguration);
             builder.Register<IDataSerializer, NewtonsoftJsonDataSerializer>(Lifetime.Singleton);
-            builder.Register<IDataStorage<SaveData>, CloudSaveDataStorage<SaveData>>(Lifetime.Singleton);
+            builder.Register<DataStorageFactory>(Lifetime.Singleton);
+            builder.Register(container =>
+            {
+                var factory = container.Resolve<DataStorageFactory>();
+                return factory.Create();
+            }, Lifetime.Singleton);
             builder.Register<AuthService>(Lifetime.Singleton);
             builder.Register<ISceneLoader, SceneLoader>(Lifetime.Singleton);
-            builder.RegisterInstance(m_ConfigurationData);
             builder.RegisterEntryPoint<BootEntry>();
         }
     }

@@ -5,6 +5,7 @@ using Unity.Services.Core;
 using Unity.Services.Authentication;
 using Unity.Services.CloudSave;
 using Unity.Services.CloudSave.Models.Data.Player;
+using UnityEngine;
 
 namespace Infrastructure.DataStorage.Implementations
 {
@@ -17,7 +18,6 @@ namespace Infrastructure.DataStorage.Implementations
         {
             _authService = authService;
             _dataSerializer = dataSerializer;
-
             _authService.Initialize();
         }
 
