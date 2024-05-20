@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
 using UnityEngine;
@@ -8,17 +9,16 @@ namespace Game.Data
     [JsonObject(MemberSerialization.Fields)]
     public class SaveData
     {
-        private List<SerializableVector3> _points = new();
-        private bool _hasLastPoint;
-        private SerializableVector3 _lastPoint;
-        private SerializableVector3 _localPosition;
-        private SerializableVector3 _localEulerRotation;
-        private SerializableVector3 _localScale;
-        
-        public List<Vector3> Points
+        public List<Vector3> GetPoints()
         {
-            get => _points.Select<SerializableVector3, Vector3>(x => x).ToList();
-            set => _points = value.Select<Vector3, SerializableVector3>(x => x).ToList();
+            _cached ??= _points.Select<SerializableVector3, Vector3>(x => x).ToList();
+            return _cached;
+        }
+
+        public void SetPoints(List<Vector3> points)
+        {
+            _cached = points;
+            _points = points.Select<Vector3, SerializableVector3>(x => x).ToList();
         }
         
         public Vector3 LastPoint
@@ -44,10 +44,21 @@ namespace Game.Data
             get => _localScale;
             set => _localScale = value;
         }
+        
         public bool HasLastPoint
         {
             get => _hasLastPoint;
             set => _hasLastPoint = value;
         }
+        
+        [NonSerialized]
+        private List<Vector3> _cached;
+        
+        private List<SerializableVector3> _points = new();
+        private bool _hasLastPoint;
+        private SerializableVector3 _lastPoint;
+        private SerializableVector3 _localPosition;
+        private SerializableVector3 _localEulerRotation;
+        private SerializableVector3 _localScale;
     }
 }

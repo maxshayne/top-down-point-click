@@ -7,7 +7,9 @@
         "VContainer",
         "Unity.Collections",
         "Unity.Entities",
-        "UniTask"
+        "UniTask",
+        "UnityEditor.UI",
+        "UnityEngine.UI"
     ],
     "includePlatforms": [],
     "excludePlatforms": [
