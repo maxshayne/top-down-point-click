@@ -1,0 +1,50 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Default Local Group
+  m_EditorClassIdentifier: 
+  m_GroupName: Default Local Group
+  m_Data:
+    m_SerializedData: []
+  m_GUID: b139c09bbc4152744981d5c79d260648
+  m_SerializeEntries:
+  - m_GUID: 9fc0d4010bbf28b4594072e72b8655ab
+    m_Address: Assets/Scenes/Game.unity
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3cbdac15a01734c4e94c6b9a7bd226b6
+    m_Address: Assets/Scenes/Menu.unity
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ad4aee5d9a9831940aa3e13f67a016e1
+    m_Address: Assets/Prefabs/SceneManagement/LoadingCanvas.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d0c0865e6ec46904ab7a200f7a2a1c80
+    m_Address: Assets/Prefabs/LevelEnvironment/Level1.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 607f397bc1bd9b748a1c530ebc2d9bea
+    m_Address: Assets/Prefabs/LevelEnvironment/Level 2.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: b0913d6332cf21745ab1005c4af3126e, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 3f1377c7d235da84e860afee2b2fd660, type: 2}
+    - {fileID: 11400000, guid: 2baad78535d48804fa5f88c58aeb2951, type: 2}
