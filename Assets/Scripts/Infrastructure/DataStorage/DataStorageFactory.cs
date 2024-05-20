@@ -1,5 +1,4 @@
 ﻿using System;
-using Game;
 using Game.Root.Configuration;
 using Infrastructure.DataStorage.Implementations;
 using JetBrains.Annotations;
@@ -7,7 +6,7 @@ using JetBrains.Annotations;
 namespace Infrastructure.DataStorage
 {
     [UsedImplicitly]
-    public class DataStorageFactory
+    public class DataStorageFactory<T>
     {
         private readonly GameConfiguration _gameConfiguration;
         private readonly IDataSerializer _dataSerializer;
@@ -23,12 +22,12 @@ namespace Infrastructure.DataStorage
             _authService = authService;
         }
 
-        public IDataStorage<SaveData> Create()
+        public IDataStorage<T> Create()
         {
             return _gameConfiguration.GetDataStorageType() switch
             {
-                DataStorageType.Local => new PlayerPrefsDataStorage<SaveData>(_dataSerializer),
-                DataStorageType.Cloud => new CloudSaveDataStorage<SaveData>(_authService, _dataSerializer),
+                DataStorageType.Local => new PlayerPrefsDataStorage<T>(_dataSerializer),
+                DataStorageType.Cloud => new CloudSaveDataStorage<T>(_authService, _dataSerializer),
                 _ => throw new ArgumentOutOfRangeException()
             };
         }

@@ -2,12 +2,14 @@
 using JetBrains.Annotations;
 using UnityEngine.AI;
 
-namespace Game
+namespace Game.Gameplay
 {
     [UsedImplicitly]
     public class PlayerLevelConfigurator
     {
-        public PlayerLevelConfigurator(NavMeshAgent playerAgent, PlayerConfiguration playerConfiguration)
+        public PlayerLevelConfigurator(
+            NavMeshAgent playerAgent, 
+            PlayerConfiguration playerConfiguration)
         {
             _playerAgent = playerAgent;
             _playerConfiguration = playerConfiguration;

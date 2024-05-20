@@ -10,10 +10,10 @@ namespace Infrastructure.DataStorage.Implementations
     {
         public void Initialize()
         {
-            UniTask.Create(Factory);
+            UniTask.Create(InitializeAsync);
         }
 
-        private async UniTask Factory()
+        private async UniTask InitializeAsync()
         {
             try
             {
@@ -37,6 +37,6 @@ namespace Infrastructure.DataStorage.Implementations
             IsInitialized = true;
         }
 
-        public bool IsInitialized { get; set; }
+        public bool IsInitialized { get; private set; }
     }
 }

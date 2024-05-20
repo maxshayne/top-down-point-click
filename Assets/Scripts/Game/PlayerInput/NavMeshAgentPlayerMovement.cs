@@ -1,8 +1,11 @@
-﻿using UnityEngine;
+﻿using Game.Data;
+using JetBrains.Annotations;
+using UnityEngine;
 using UnityEngine.AI;
 
 namespace Game.PlayerInput
 {
+    [UsedImplicitly]
     public class NavMeshAgentPlayerMovement : IPlayerMovement
     {
         public NavMeshAgentPlayerMovement(NavMeshAgent navMeshAgent)
@@ -43,13 +46,9 @@ namespace Game.PlayerInput
                 LocalPosition = tr.localPosition,
                 LocalEulerRotation = tr.localEulerAngles,
                 LocalScale = tr.localScale,
-                //Points = _pathQueue.ToList()
             };
             return state;
         }
-
-        private readonly NavMeshAgent _navMeshAgent;
-        private Vector3? _currentTarget;
         
         public SaveData UpdateState(SaveData state)
         {
@@ -60,5 +59,8 @@ namespace Game.PlayerInput
             state. LocalScale = tr.localScale;
             return state;
         }
+        
+        private readonly NavMeshAgent _navMeshAgent;
+        private Vector3? _currentTarget;
     }
 }

@@ -39,11 +39,12 @@ namespace Game.PlayerInput
             var ray = _worldCamera.ScreenPointToRay(Pointer.current.position.value);
             if (!Physics.Raycast(ray, out var hit)) return false;
             pos = hit.point;
-            if (hit.collider.CompareTag("Player")) return false;
+            if (hit.collider.CompareTag(PlayerTag)) return false;
             return !hit.collider.CompareTag(ObstacleTag);
         }
         
         private readonly Camera _worldCamera;
+        private const string PlayerTag = "Player";
         private const string ObstacleTag = "Obstacle";
         private readonly List<IInputListener> _listeners = new();
     }

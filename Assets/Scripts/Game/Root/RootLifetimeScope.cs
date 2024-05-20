@@ -1,4 +1,5 @@
-﻿using Game.Root.Configuration;
+﻿using Game.Data;
+using Game.Root.Configuration;
 using Game.Root.SceneManagement;
 using Infrastructure.DataStorage;
 using Infrastructure.DataStorage.Implementations;
@@ -18,10 +19,10 @@ namespace Game.Root
             builder.RegisterInstance(m_ConfigurationData);
             builder.RegisterInstance(m_ConfigurationData.GameConfiguration);
             builder.Register<IDataSerializer, NewtonsoftJsonDataSerializer>(Lifetime.Singleton);
-            builder.Register<DataStorageFactory>(Lifetime.Singleton);
+            builder.Register<DataStorageFactory<SaveData>>(Lifetime.Singleton);
             builder.Register(container =>
             {
-                var factory = container.Resolve<DataStorageFactory>();
+                var factory = container.Resolve<DataStorageFactory<SaveData>>();
                 return factory.Create();
             }, Lifetime.Singleton);
             builder.Register<DataBuilder<SaveData>>(Lifetime.Singleton);

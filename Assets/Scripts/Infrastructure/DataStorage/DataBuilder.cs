@@ -1,6 +1,7 @@
-﻿using JetBrains.Annotations;
+﻿using Game;
+using JetBrains.Annotations;
 
-namespace Game
+namespace Infrastructure.DataStorage
 {
     [UsedImplicitly]
     public class DataBuilder<T> where T : new()
@@ -23,10 +24,5 @@ namespace Game
         }
 
         private T _state;
-    }
-
-    public interface IBuilderAgent<T>
-    {
-        T UpdateState(T state);
     }
 }
