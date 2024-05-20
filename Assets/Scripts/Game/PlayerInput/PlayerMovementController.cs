@@ -53,7 +53,7 @@ namespace Game.PlayerInput
         {
             if (saveData == null) return;
             _playerMovement.RestoreData(saveData);
-            saveData.Points.ForEach(_pathProvider.AddPointToPath);
+            saveData.GetPoints().ForEach(_pathProvider.AddPointToPath);
         }
         
         private bool IsCharacterMoving() => _playerMovement.IsMoving();

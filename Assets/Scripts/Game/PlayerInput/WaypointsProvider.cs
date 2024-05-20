@@ -30,7 +30,7 @@ namespace Game.PlayerInput
         
         public SaveData UpdateState(SaveData state)
         {
-            state.Points = _pathQueue.ToList();
+            state.SetPoints(_pathQueue.ToList());
             return state;
         }
 
