@@ -2,7 +2,7 @@ using System;
 using EventBusSystem;
 using UnityEngine;
 
-namespace Game.PlayerInput
+namespace Game.PlayerMovement
 {
     public class WaypointChecker : MonoBehaviour
     {

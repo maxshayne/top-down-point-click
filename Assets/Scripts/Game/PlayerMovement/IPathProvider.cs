@@ -2,7 +2,7 @@ using Game.Data;
 using Infrastructure.DataStorage;
 using UnityEngine;
 
-namespace Game.PlayerInput
+namespace Game.PlayerMovement
 {
     public interface IPathProvider : IBuilderAgent<SaveData>
     {

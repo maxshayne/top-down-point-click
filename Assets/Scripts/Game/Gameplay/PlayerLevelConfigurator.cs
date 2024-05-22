@@ -24,4 +24,5 @@ namespace Game.Gameplay
         private readonly NavMeshAgent _playerAgent;
         private readonly PlayerConfiguration _playerConfiguration;
     }
+
 }

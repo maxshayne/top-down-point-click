@@ -1,6 +1,7 @@
+using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using Game.Data;
-using Game.PlayerInput;
+using Game.PlayerMovement;
 using Game.Root;
 using Infrastructure.DataStorage;
 using JetBrains.Annotations;
@@ -14,33 +15,34 @@ namespace Game.Gameplay
         public GameEntry(
             ISceneLoader sceneLoader,
             IDataStorage<SaveData> dataStorage,
-            DataBuilder<SaveData> saveDataBuilder,
+            GamePresenter gamePresenter,
             GameLevelConfigurator gameLevelConfigurator,
             PlayerLevelConfigurator playerLevelConfigurator,
-            PlayerMovementController playerMovementController,
-            IPathProvider pathProvider,
-            IPlayerMovement playerMovement)
+            ClickMovementController clickMovementController)
         {
             _sceneLoader = sceneLoader;
             _dataStorage = dataStorage;
+            _gamePresenter = gamePresenter;
             _gameLevelConfigurator = gameLevelConfigurator;
             _playerLevelConfigurator = playerLevelConfigurator;
-            _playerMovementController = playerMovementController;
+            _clickMovementController = clickMovementController;
         }
 
         public async void Start()
         {
-            var save = await _dataStorage.Load();
+            var saveData = await _dataStorage.Load();
             await UniTask.WhenAll(
                 UniTask.WaitUntil(() => _sceneLoader.IsSceneLoaded),
                 _gameLevelConfigurator.LoadLevel());
+            _gamePresenter.Configure(saveData);
             _playerLevelConfigurator.Configure();
-            _playerMovementController.Configure(save);
+            _clickMovementController.Configure();
         }
 
-        private readonly PlayerMovementController _playerMovementController;
+        private readonly ClickMovementController _clickMovementController;
         private readonly ISceneLoader _sceneLoader;
         private readonly IDataStorage<SaveData> _dataStorage;
+        private readonly GamePresenter _gamePresenter;
         private readonly GameLevelConfigurator _gameLevelConfigurator;
         private readonly PlayerLevelConfigurator _playerLevelConfigurator;
     }

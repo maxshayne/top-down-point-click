@@ -2,7 +2,7 @@
 using Infrastructure.DataStorage;
 using UnityEngine;
 
-namespace Game.PlayerInput
+namespace Game.PlayerMovement
 {
     public interface IPlayerMovement : IBuilderAgent<SaveData>
     {
@@ -10,6 +10,6 @@ namespace Game.PlayerInput
         void CreateDestination(Vector3 position);
         bool IsMoving();
         void ReachDestination();
-        void RestoreData(SaveData saveData);
+        void LoadState(SaveData data);
     }
 }

@@ -1,5 +1,5 @@
 using Game.Data;
-using Game.PlayerInput;
+using Game.PlayerMovement;
 using Game.Root;
 using Infrastructure.DataStorage;
 using JetBrains.Annotations;
@@ -21,6 +21,12 @@ namespace Game.Gameplay
             _saveDataBuilder = saveDataBuilder;
             _pathProvider = pathProvider;
             _playerMovement = playerMovement;
+        }
+        
+        public void Configure(SaveData saveData)
+        {
+            _playerMovement.LoadState(saveData);
+            saveData?.GetPoints().ForEach(_pathProvider.AddPointToPath);
         }
 
         public async void ExitScene()

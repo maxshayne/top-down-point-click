@@ -5,7 +5,7 @@ using Game.Root.Configuration;
 using JetBrains.Annotations;
 using UnityEngine;
 
-namespace Game.PlayerInput
+namespace Game.PlayerMovement
 {
     [UsedImplicitly]
     public class WaypointsProvider : IPathProvider
