@@ -7,7 +7,7 @@ namespace Game.Menu
     {
         protected override void Configure(IContainerBuilder builder)
         {
-            builder.RegisterEntryPoint<MenuEntry>();
+            builder.Register<MenuPresenter>(Lifetime.Scoped);
             builder.RegisterComponentInHierarchy<MenuUIView>();
         }
     }

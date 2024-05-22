@@ -8,7 +8,15 @@ namespace Infrastructure.Serializers.Implementations
     {
         public string Serialize<T>(T data)
         {
-            return JsonUtility.ToJson(data);
+            try
+            {
+                return JsonUtility.ToJson(data);
+            }
+            catch (Exception e)
+            {
+                Debug.LogException(e);
+                return default;
+            }
         }
 
         public T Deserialize<T>(string data)

@@ -1,7 +1,4 @@
-﻿using EventBusSystem;
-using Game.Root;
-using Infrastructure.DataStorage;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using VContainer;
 
@@ -9,13 +6,10 @@ namespace Game.Menu
 {
     public class MenuUIView : MonoBehaviour
     {
-        [SerializeField] private Button m_StartButton;
-        [SerializeField] private Button m_ClearSaveButton;
-        
         [Inject]
-        private void Construct(ISceneLoader sceneLoader)
+        private void Construct(MenuPresenter presenter)
         {
-            _sceneLoader = sceneLoader;
+            _presenter = presenter;
         }
 
         private void Awake()
@@ -26,14 +20,23 @@ namespace Game.Menu
 
         private void OnClearSave()
         {
-            EventBus.RaiseEvent<IDataStorageEventHandler>(h=>h.ClearStorage());
+            _presenter.ClearSave();
         }
 
         private void Load()
         {
-            _sceneLoader.LoadScene(SceneKey.Game);
+            _presenter.LoadGame();
         }
 
-        private ISceneLoader _sceneLoader;
+        private void OnDestroy()
+        {
+            m_StartButton.onClick.RemoveAllListeners();
+            m_ClearSaveButton.onClick.RemoveAllListeners();
+        }
+
+        [SerializeField] private Button m_StartButton;
+        [SerializeField] private Button m_ClearSaveButton;
+        
+        private MenuPresenter _presenter;
     }
 }

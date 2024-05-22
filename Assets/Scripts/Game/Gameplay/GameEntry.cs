@@ -1,6 +1,4 @@
-using System;
 using Cysharp.Threading.Tasks;
-using EventBusSystem;
 using Game.Data;
 using Game.PlayerInput;
 using Game.Root;
@@ -11,7 +9,7 @@ using VContainer.Unity;
 namespace Game.Gameplay
 {
     [UsedImplicitly]
-    public class GameEntry : IStartable, IExitListener, IDisposable
+    public class GameEntry : IStartable
     {
         public GameEntry(
             ISceneLoader sceneLoader,
@@ -25,12 +23,9 @@ namespace Game.Gameplay
         {
             _sceneLoader = sceneLoader;
             _dataStorage = dataStorage;
-            _saveDataBuilder = saveDataBuilder;
             _gameLevelConfigurator = gameLevelConfigurator;
             _playerLevelConfigurator = playerLevelConfigurator;
             _playerMovementController = playerMovementController;
-            _pathProvider = pathProvider;
-            _playerMovement = playerMovement;
         }
 
         public async void Start()
@@ -41,36 +36,11 @@ namespace Game.Gameplay
                 _gameLevelConfigurator.LoadLevel());
             _playerLevelConfigurator.Configure();
             _playerMovementController.Configure(save);
-            EventBus.Subscribe(this);
-        }
-        
-        public void CallExit()
-        {
-            OnExitCallback();
-        }
-        
-        public void Dispose()
-        {
-            EventBus.Unsubscribe(this);
-        }
-
-        private async void OnExitCallback()
-        {
-            var saveData = _saveDataBuilder
-                .CreateEmptyState()
-                .UpdateState(_playerMovement)
-                .UpdateState(_pathProvider)
-                .Build();
-            await _dataStorage.Save(saveData);
-            _sceneLoader.LoadScene(SceneKey.Menu);
         }
 
         private readonly PlayerMovementController _playerMovementController;
-        private readonly IPathProvider _pathProvider;
-        private readonly IPlayerMovement _playerMovement;
         private readonly ISceneLoader _sceneLoader;
         private readonly IDataStorage<SaveData> _dataStorage;
-        private readonly DataBuilder<SaveData> _saveDataBuilder;
         private readonly GameLevelConfigurator _gameLevelConfigurator;
         private readonly PlayerLevelConfigurator _playerLevelConfigurator;
     }
