@@ -8,12 +8,7 @@ namespace Infrastructure.DataStorage.Implementations
 {
     public class AuthService
     {
-        public void Initialize()
-        {
-            UniTask.Create(InitializeAsync);
-        }
-
-        private async UniTask InitializeAsync()
+        public async void Initialize()
         {
             try
             {
@@ -36,7 +31,7 @@ namespace Infrastructure.DataStorage.Implementations
 
             IsInitialized = true;
         }
-
+        
         public bool IsInitialized { get; private set; }
     }
 }

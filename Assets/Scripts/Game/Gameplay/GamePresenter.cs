@@ -14,18 +14,18 @@ namespace Game.Gameplay
             IDataStorage<SaveData> dataStorage,
             DataBuilder<SaveData> saveDataBuilder,
             IPathProvider pathProvider,
-            IPlayerMovement playerMovement)
+            IPlayerMovement playerMovement,
+            PlayerLevelConfigurator playerLevelConfigurator)
         {
             _sceneLoader = sceneLoader;
             _dataStorage = dataStorage;
             _saveDataBuilder = saveDataBuilder;
             _pathProvider = pathProvider;
-            _playerMovement = playerMovement;
+            _playerLevelConfigurator = playerLevelConfigurator;
         }
         
         public void Configure(SaveData saveData)
         {
-            _playerMovement.LoadState(saveData);
             saveData?.GetPoints().ForEach(_pathProvider.AddPointToPath);
         }
 
@@ -40,7 +40,7 @@ namespace Game.Gameplay
         {
             var saveData = _saveDataBuilder
                 .CreateEmptyState()
-                .UpdateState(_playerMovement)
+                .UpdateState(_playerLevelConfigurator)
                 .UpdateState(_pathProvider)
                 .Build();
             return saveData;
@@ -50,6 +50,6 @@ namespace Game.Gameplay
         private readonly IDataStorage<SaveData> _dataStorage;
         private readonly DataBuilder<SaveData> _saveDataBuilder;
         private readonly IPathProvider _pathProvider;
-        private readonly IPlayerMovement _playerMovement;
+        private readonly PlayerLevelConfigurator _playerLevelConfigurator;
     }
 }

@@ -7,6 +7,7 @@ namespace Game.PlayerMovement
     public interface IPathProvider : IBuilderAgent<SaveData>
     {
         void AddPointToPath(Vector3 position);
-        bool TryGetNextPoint(out Vector3 position);
+        bool TryPeekNextPoint(out Vector3 position);
+        void RemovePoint();
     }
 }

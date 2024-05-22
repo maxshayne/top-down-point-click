@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using Game.Data;
 using Game.PlayerMovement;
@@ -35,7 +34,7 @@ namespace Game.Gameplay
                 UniTask.WaitUntil(() => _sceneLoader.IsSceneLoaded),
                 _gameLevelConfigurator.LoadLevel());
             _gamePresenter.Configure(saveData);
-            _playerLevelConfigurator.Configure();
+            _playerLevelConfigurator.Configure(saveData);
             _clickMovementController.Configure();
         }
 

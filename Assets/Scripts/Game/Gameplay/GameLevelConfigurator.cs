@@ -3,7 +3,6 @@ using Game.Root.Configuration;
 using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
-using VContainer.Unity;
 
 namespace Game.Gameplay
 {

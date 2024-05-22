@@ -21,13 +21,18 @@ namespace Game.PlayerMovement
             _pathQueue.Enqueue(position);
         }
 
-        public bool TryGetNextPoint(out Vector3 position)
+        public bool TryPeekNextPoint(out Vector3 position)
         {
-            if (_pathQueue.TryDequeue(out position)) return true;
+            if (_pathQueue.TryPeek(out position)) return true;
             Debug.LogWarning($"cant get next point, queue count is {_pathQueue.Count}");
             return false;
         }
         
+        public void RemovePoint()
+        {
+            _pathQueue.Dequeue();
+        }
+
         public SaveData UpdateState(SaveData state)
         {
             state.SetPoints(_pathQueue.ToList());

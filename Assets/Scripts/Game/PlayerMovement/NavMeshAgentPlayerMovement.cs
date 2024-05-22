@@ -1,5 +1,4 @@
-﻿using Game.Data;
-using JetBrains.Annotations;
+﻿using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -14,44 +13,17 @@ namespace Game.PlayerMovement
             _navMeshAgent = navMeshAgent;
         }
 
-        public Vector3 CurrentTarget
-        {
-            get;
-            private set;
-        }
-        
-        public void LoadState(SaveData data)
-        {
-            var tr = _navMeshAgent.transform;
-            tr.localPosition = data.LocalPosition;
-            tr.localEulerAngles  = data.LocalEulerRotation;
-            tr.localScale  = data.LocalScale;
-            CurrentTarget = data.LastPoint;
-            _hasTarget = data.HasLastPoint;
-        }
-
         public void CreateDestination(Vector3 position)
         {
             _hasTarget = true;
             _navMeshAgent.SetDestination(position);
-            CurrentTarget = position;
             CreateWaypoint(position);
         }
 
         public bool IsMoving() => _hasTarget;
 
-        public void ReachDestination()
-        {
-            _hasTarget = false;
-        }
+        public void ReachDestination() => _hasTarget = false;
 
-        public SaveData UpdateState(SaveData state)
-        {
-            state.LastPoint = CurrentTarget;
-            state.HasLastPoint = _hasTarget;
-            return state;
-        }
-        
         private void CreateWaypoint(Vector3 newPos)
         {
             Debug.Log($"create waypoint in {newPos}");

@@ -26,21 +26,20 @@ namespace Game.PlayerMovement
         
         public void Configure()
         {
-            if (!_playerMovement.IsMoving()) return;
-            var pos = _playerMovement.CurrentTarget;
-            _playerMovement.CreateDestination(pos);
+            SetNewDestinationFromQueue();
         }
 
         public void NotifyInput(Vector3 clickPosition)
         {
             if (!_inputValidator.TryValidateClick(clickPosition, out var pos)) return;
             _pathProvider.AddPointToPath(pos);
-            if (IsCharacterMoving()) return;
+            if (_playerMovement.IsMoving()) return;
             SetNewDestinationFromQueue();
         }
 
         public void WaypointReached()
         {
+            _pathProvider.RemovePoint();
             _playerMovement.ReachDestination();
             SetNewDestinationFromQueue();
         }
@@ -51,11 +50,9 @@ namespace Game.PlayerMovement
             EventBus.Unsubscribe(this);
         }
 
-        private bool IsCharacterMoving() => _playerMovement.IsMoving();
-
         private void SetNewDestinationFromQueue()
         {
-            if (!_pathProvider.TryGetNextPoint(out var pos)) return;
+            if (!_pathProvider.TryPeekNextPoint(out var pos)) return;
             _playerMovement.CreateDestination(pos);
         }
 
