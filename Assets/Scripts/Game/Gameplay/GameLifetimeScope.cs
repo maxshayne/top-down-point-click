@@ -11,8 +11,9 @@ namespace Game.Gameplay
     {
         protected override void Configure(IContainerBuilder builder)
         {
-            builder.RegisterComponentInHierarchy<GameUIView>();
             builder.RegisterEntryPoint<GameEntry>();
+            builder.RegisterComponentInHierarchy<GameUIView>();
+            builder.Register<GamePresenter>(Lifetime.Scoped);
             builder.Register<GameLevelConfigurator>(Lifetime.Scoped);
             builder.Register<PlayerLevelConfigurator>(Lifetime.Scoped);
             RegisterGameServices(builder);
