@@ -13,6 +13,7 @@ namespace Game.PlayerMovement
             col.isTrigger = true;
             var rb = gameObject.AddComponent<Rigidbody>();
             rb.useGravity = false;
+            gameObject.SetActive(false);
         }
         
         public void MoveToPoint(Vector3 position)

@@ -16,7 +16,11 @@ namespace Game.Gameplay
         
         public void Load(SaveData data)
         {
-            if (data == null) return;
+            if (data == null)
+            {
+                _saveData = new SaveData();
+                return;
+            }
             _saveData = data;
             _saveData.GetPoints().ForEach(_pathProvider.AddPointToPath);
             
