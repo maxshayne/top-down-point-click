@@ -9,11 +9,10 @@ namespace Game.PlayerInput
     [UsedImplicitly]
     public class DefaultPlayerInput : IPlayerInput, IDisposable
     {
-        public DefaultPlayerInput(Camera worldCamera)
+        public DefaultPlayerInput()
         {
-            _worldCamera = worldCamera;
             _controls = new Controls();
-            _controls.Main.Move.started += OnMovePerformed;
+            _controls.Main.Move.started += OnInputReceived;
             _controls.Enable();
         }
         
@@ -33,33 +32,19 @@ namespace Game.PlayerInput
             _controls.Dispose();
         }
         
-        private void OnMovePerformed(InputAction.CallbackContext obj)
+        private void OnInputReceived(InputAction.CallbackContext obj)
         {
-            if (!TryGetHitPosition(out var newPosition)) return;
-            Notify(newPosition);
+            Notify(Pointer.current.position.value);
         }
 
-        private void Notify(Vector3 position)
+        private void Notify(Vector3 clickPosition)
         {
             foreach (var inputListener in _listeners)
             {
-                inputListener.NotifyPoint(position);
+                inputListener.NotifyInput(clickPosition);
             }
         }
-
-        private bool TryGetHitPosition(out Vector3 pos)
-        {
-            pos = Vector3.zero;
-            var ray = _worldCamera.ScreenPointToRay(Pointer.current.position.value);
-            if (!Physics.Raycast(ray, out var hit)) return false;
-            pos = hit.point;
-            if (hit.collider.CompareTag(PlayerTag)) return false;
-            return !hit.collider.CompareTag(ObstacleTag);
-        }
         
-        private readonly Camera _worldCamera;
-        private const string PlayerTag = "Player";
-        private const string ObstacleTag = "Obstacle";
         private readonly List<IInputListener> _listeners = new();
         private readonly Controls _controls;
     }

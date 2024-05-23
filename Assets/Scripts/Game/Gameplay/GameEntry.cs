@@ -1,6 +1,6 @@
 using Cysharp.Threading.Tasks;
 using Game.Data;
-using Game.PlayerInput;
+using Game.PlayerMovement;
 using Game.Root;
 using Infrastructure.DataStorage;
 using JetBrains.Annotations;
@@ -14,31 +14,32 @@ namespace Game.Gameplay
         public GameEntry(
             ISceneLoader sceneLoader,
             IDataStorage<SaveData> dataStorage,
-            DataBuilder<SaveData> saveDataBuilder,
             GameLevelConfigurator gameLevelConfigurator,
             PlayerLevelConfigurator playerLevelConfigurator,
-            PlayerMovementController playerMovementController,
-            IPathProvider pathProvider,
-            IPlayerMovement playerMovement)
+            ClickMovementController clickMovementController,
+            SaveLoadPresenter saveLoadPresenter)
         {
             _sceneLoader = sceneLoader;
             _dataStorage = dataStorage;
             _gameLevelConfigurator = gameLevelConfigurator;
             _playerLevelConfigurator = playerLevelConfigurator;
-            _playerMovementController = playerMovementController;
+            _clickMovementController = clickMovementController;
+            _saveLoadPresenter = saveLoadPresenter;
         }
 
         public async void Start()
         {
-            var save = await _dataStorage.Load();
+            var saveData = await _dataStorage.Load();
             await UniTask.WhenAll(
                 UniTask.WaitUntil(() => _sceneLoader.IsSceneLoaded),
                 _gameLevelConfigurator.LoadLevel());
+            _saveLoadPresenter.Load(saveData);
             _playerLevelConfigurator.Configure();
-            _playerMovementController.Configure(save);
+            _clickMovementController.Initialize();
         }
 
-        private readonly PlayerMovementController _playerMovementController;
+        private readonly ClickMovementController _clickMovementController;
+        private readonly SaveLoadPresenter _saveLoadPresenter;
         private readonly ISceneLoader _sceneLoader;
         private readonly IDataStorage<SaveData> _dataStorage;
         private readonly GameLevelConfigurator _gameLevelConfigurator;

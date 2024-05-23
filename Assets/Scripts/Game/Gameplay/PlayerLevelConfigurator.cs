@@ -5,7 +5,7 @@ using UnityEngine.AI;
 namespace Game.Gameplay
 {
     [UsedImplicitly]
-    public class PlayerLevelConfigurator
+    public class PlayerLevelConfigurator 
     {
         public PlayerLevelConfigurator(
             NavMeshAgent playerAgent, 
