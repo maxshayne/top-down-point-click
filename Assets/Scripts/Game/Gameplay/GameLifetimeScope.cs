@@ -18,6 +18,7 @@ namespace Game.Gameplay
             builder.Register<IInputValidator, InputValidator>(Lifetime.Scoped);
             builder.Register<GameLevelConfigurator>(Lifetime.Scoped);
             builder.Register<PlayerLevelConfigurator>(Lifetime.Scoped);
+            builder.Register<SaveLoadPresenter>(Lifetime.Scoped);
             RegisterGameServices(builder);
             RegisterConfigData(builder);
         }

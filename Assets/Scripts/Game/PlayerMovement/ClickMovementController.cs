@@ -24,7 +24,7 @@ namespace Game.PlayerMovement
             EventBus.Subscribe(this);
         }
         
-        public void Configure()
+        public void Initialize()
         {
             SetNewDestinationFromQueue();
         }

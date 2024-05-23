@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using Game.Data;
 using Game.Root.Configuration;
 using JetBrains.Annotations;
 using UnityEngine;
@@ -28,16 +27,9 @@ namespace Game.PlayerMovement
             return false;
         }
         
-        public void RemovePoint()
-        {
-            _pathQueue.Dequeue();
-        }
-
-        public SaveData UpdateState(SaveData state)
-        {
-            state.SetPoints(_pathQueue.ToList());
-            return state;
-        }
+        public void RemovePoint() => _pathQueue.Dequeue();
+        
+        public List<Vector3> GetPath() => _pathQueue.ToList();
 
         private readonly InputConfiguration _inputConfiguration;
         private readonly Queue<Vector3> _pathQueue = new();

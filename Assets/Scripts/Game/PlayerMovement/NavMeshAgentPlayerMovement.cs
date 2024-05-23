@@ -7,8 +7,7 @@ namespace Game.PlayerMovement
     [UsedImplicitly]
     public class NavMeshAgentPlayerMovement : IPlayerMovement
     {
-        public NavMeshAgentPlayerMovement(
-            NavMeshAgent navMeshAgent)
+        public NavMeshAgentPlayerMovement(NavMeshAgent navMeshAgent)
         {
             _navMeshAgent = navMeshAgent;
         }

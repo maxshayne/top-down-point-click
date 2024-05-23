@@ -14,17 +14,17 @@ namespace Game.Gameplay
         public GameEntry(
             ISceneLoader sceneLoader,
             IDataStorage<SaveData> dataStorage,
-            GamePresenter gamePresenter,
             GameLevelConfigurator gameLevelConfigurator,
             PlayerLevelConfigurator playerLevelConfigurator,
-            ClickMovementController clickMovementController)
+            ClickMovementController clickMovementController,
+            SaveLoadPresenter saveLoadPresenter)
         {
             _sceneLoader = sceneLoader;
             _dataStorage = dataStorage;
-            _gamePresenter = gamePresenter;
             _gameLevelConfigurator = gameLevelConfigurator;
             _playerLevelConfigurator = playerLevelConfigurator;
             _clickMovementController = clickMovementController;
+            _saveLoadPresenter = saveLoadPresenter;
         }
 
         public async void Start()
@@ -33,15 +33,15 @@ namespace Game.Gameplay
             await UniTask.WhenAll(
                 UniTask.WaitUntil(() => _sceneLoader.IsSceneLoaded),
                 _gameLevelConfigurator.LoadLevel());
-            _gamePresenter.Configure(saveData);
-            _playerLevelConfigurator.Configure(saveData);
-            _clickMovementController.Configure();
+            _saveLoadPresenter.Load(saveData);
+            _playerLevelConfigurator.Configure();
+            _clickMovementController.Initialize();
         }
 
         private readonly ClickMovementController _clickMovementController;
+        private readonly SaveLoadPresenter _saveLoadPresenter;
         private readonly ISceneLoader _sceneLoader;
         private readonly IDataStorage<SaveData> _dataStorage;
-        private readonly GamePresenter _gamePresenter;
         private readonly GameLevelConfigurator _gameLevelConfigurator;
         private readonly PlayerLevelConfigurator _playerLevelConfigurator;
     }

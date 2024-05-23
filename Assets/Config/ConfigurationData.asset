@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: ConfigurationData
   m_EditorClassIdentifier: 
   m_GameConfiguration:
-    m_SavingSystem: 1
+    m_SavingSystem: 0
   m_LevelConfiguration:
     m_LevelAsset:
       m_AssetGUID: 607f397bc1bd9b748a1c530ebc2d9bea
