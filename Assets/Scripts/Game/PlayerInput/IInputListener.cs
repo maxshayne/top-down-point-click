@@ -4,6 +4,6 @@ namespace Game.PlayerInput
 {
     public interface IInputListener
     {
-        void NotifyPoint(Vector3 position);
+        void NotifyInput(Vector3 position);
     }
 }

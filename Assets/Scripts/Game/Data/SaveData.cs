@@ -21,12 +21,6 @@ namespace Game.Data
             _points = points.Select<Vector3, SerializableVector3>(x => x).ToList();
         }
         
-        public Vector3 LastPoint
-        {
-            get => _lastPoint;
-            set => _lastPoint = value;
-        }
-        
         public Vector3 LocalPosition
         {
             get => _localPosition;
@@ -45,18 +39,10 @@ namespace Game.Data
             set => _localScale = value;
         }
         
-        public bool HasLastPoint
-        {
-            get => _hasLastPoint;
-            set => _hasLastPoint = value;
-        }
-        
         [NonSerialized]
         private List<Vector3> _cached;
         
         private List<SerializableVector3> _points = new();
-        private bool _hasLastPoint;
-        private SerializableVector3 _lastPoint;
         private SerializableVector3 _localPosition;
         private SerializableVector3 _localEulerRotation;
         private SerializableVector3 _localScale;

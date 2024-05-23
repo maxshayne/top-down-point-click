@@ -1,6 +1,6 @@
 using EventBusSystem;
 
-namespace Game.PlayerInput
+namespace Game.PlayerMovement
 {
     public interface IWaypointReachHandler : IGlobalSubscriber
     {

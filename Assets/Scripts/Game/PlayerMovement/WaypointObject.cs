@@ -2,27 +2,32 @@ using System;
 using EventBusSystem;
 using UnityEngine;
 
-namespace Game.PlayerInput
+namespace Game.PlayerMovement
 {
-    public class WaypointChecker : MonoBehaviour
+    public class WaypointObject : MonoBehaviour
     {
-        public void Configure(Vector3 createPosition, string colTag)
+        public void Configure(string colTag)
         {
             _colTag = colTag;
-            createPosition.y = 0;
-            transform.position = createPosition;
             var col = gameObject.AddComponent<BoxCollider>();
             col.isTrigger = true;
             var rb = gameObject.AddComponent<Rigidbody>();
             rb.useGravity = false;
+            gameObject.SetActive(false);
+        }
+        
+        public void MoveToPoint(Vector3 position)
+        {
+            position.y = 0;
+            transform.position = position;
+            gameObject.SetActive(true);
         }
         
         private void OnTriggerEnter(Collider other)
         {
             if (!other.CompareTag(_colTag)) return;
-            EventBus.RaiseEvent<IWaypointReachHandler>(h=>h.WaypointReached());
-            Debug.Log(other);
-            Destroy(gameObject); //todo: pooling
+            gameObject.SetActive(false);
+            EventBus.RaiseEvent<IWaypointReachHandler>(handler=>handler.WaypointReached());
         }
         
         private Action _callback;

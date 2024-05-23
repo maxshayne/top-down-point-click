@@ -6,7 +6,7 @@ using JetBrains.Annotations;
 namespace Infrastructure.DataStorage
 {
     [UsedImplicitly]
-    public class DataStorageFactory<T>
+    public class DataStorageFactory<T> where T : new()
     {
         private readonly GameConfiguration _gameConfiguration;
         private readonly IDataSerializer _dataSerializer;

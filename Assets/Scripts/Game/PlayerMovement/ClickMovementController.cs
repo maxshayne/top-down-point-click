@@ -1,19 +1,21 @@
 using System;
 using EventBusSystem;
-using Game.Data;
+using Game.PlayerInput;
 using JetBrains.Annotations;
 using UnityEngine;
 
-namespace Game.PlayerInput
+namespace Game.PlayerMovement
 {
     [UsedImplicitly]
-    public class PlayerMovementController : IInputListener,  IWaypointReachHandler, IDisposable
+    public class ClickMovementController : IInputListener,  IWaypointReachHandler, IDisposable
     {
-        public PlayerMovementController(
+        public ClickMovementController(
+            IInputValidator inputValidator,
             IPathProvider pathProvider,
             IPlayerInput playerInput, 
             IPlayerMovement playerMovement)
         {
+            _inputValidator = inputValidator;
             _pathProvider = pathProvider;
             _playerMovement = playerMovement;
             _playerInput = playerInput;
@@ -22,23 +24,22 @@ namespace Game.PlayerInput
             EventBus.Subscribe(this);
         }
         
-        public void Configure(SaveData saveData)
+        public void Initialize()
         {
-            RestoreSaveState(saveData);
-            if (!_playerMovement.IsMoving()) return;
-            var pos = _playerMovement.CurrentTarget;
-            _playerMovement.CreateDestination(pos);
-        }
-        
-        public void NotifyPoint(Vector3 position)
-        {
-            _pathProvider.AddPointToPath(position);
-            if (IsCharacterMoving()) return;
             SetNewDestinationFromQueue();
         }
-        
+
+        public void NotifyInput(Vector3 clickPosition)
+        {
+            if (!_inputValidator.TryValidateClick(clickPosition, out var pos)) return;
+            _pathProvider.AddPointToPath(pos);
+            if (_playerMovement.IsMoving()) return;
+            SetNewDestinationFromQueue();
+        }
+
         public void WaypointReached()
         {
+            _pathProvider.RemovePoint();
             _playerMovement.ReachDestination();
             SetNewDestinationFromQueue();
         }
@@ -49,21 +50,13 @@ namespace Game.PlayerInput
             EventBus.Unsubscribe(this);
         }
 
-        private void RestoreSaveState(SaveData saveData)
-        {
-            if (saveData == null) return;
-            _playerMovement.RestoreData(saveData);
-            saveData.GetPoints().ForEach(_pathProvider.AddPointToPath);
-        }
-        
-        private bool IsCharacterMoving() => _playerMovement.IsMoving();
-
         private void SetNewDestinationFromQueue()
         {
-            if (!_pathProvider.TryGetNextPoint(out var pos)) return;
+            if (!_pathProvider.TryPeekNextPoint(out var pos)) return;
             _playerMovement.CreateDestination(pos);
         }
 
+        private readonly IInputValidator _inputValidator;
         private readonly IPathProvider _pathProvider;
         private readonly IPlayerMovement _playerMovement;
         private readonly IPlayerInput _playerInput;

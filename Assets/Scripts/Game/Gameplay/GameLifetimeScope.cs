@@ -1,4 +1,5 @@
 using Game.PlayerInput;
+using Game.PlayerMovement;
 using Game.Root.Configuration;
 using UnityEngine;
 using UnityEngine.AI;
@@ -14,8 +15,10 @@ namespace Game.Gameplay
             builder.RegisterEntryPoint<GameEntry>();
             builder.RegisterComponentInHierarchy<GameUIView>();
             builder.Register<GamePresenter>(Lifetime.Scoped);
+            builder.Register<IInputValidator, InputValidator>(Lifetime.Scoped);
             builder.Register<GameLevelConfigurator>(Lifetime.Scoped);
             builder.Register<PlayerLevelConfigurator>(Lifetime.Scoped);
+            builder.Register<SaveLoadPresenter>(Lifetime.Scoped);
             RegisterGameServices(builder);
             RegisterConfigData(builder);
         }
@@ -24,7 +27,7 @@ namespace Game.Gameplay
         {
             builder.RegisterComponent(m_NavMeshAgent);
             builder.RegisterComponent(m_WorldCamera);
-            builder.Register<PlayerMovementController>(Lifetime.Scoped);
+            builder.Register<ClickMovementController>(Lifetime.Scoped);
             builder.Register<IPlayerInput, DefaultPlayerInput>(Lifetime.Scoped);
             builder.Register<IPathProvider, WaypointsProvider>(Lifetime.Scoped);
             builder.Register<IPlayerMovement, NavMeshAgentPlayerMovement>(Lifetime.Scoped);
