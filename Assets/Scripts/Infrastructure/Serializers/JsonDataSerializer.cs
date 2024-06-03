@@ -1,8 +1,7 @@
 using System;
-using Infrastructure.DataStorage;
 using UnityEngine;
 
-namespace Infrastructure.Serializers.Implementations
+namespace Infrastructure.Serializers
 {
     public class JsonDataSerializer : IDataSerializer
     {

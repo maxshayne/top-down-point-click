@@ -1,13 +1,14 @@
 ﻿using System;
-using Cysharp.Threading.Tasks;
 using Unity.Services.Authentication;
 using Unity.Services.Core;
 using UnityEngine;
 
-namespace Infrastructure.DataStorage.Implementations
+namespace Infrastructure.Auth
 {
     public class AuthService
     {
+        public bool IsInitialized { get; private set; }
+        
         public async void Initialize()
         {
             try
@@ -31,7 +32,5 @@ namespace Infrastructure.DataStorage.Implementations
 
             IsInitialized = true;
         }
-        
-        public bool IsInitialized { get; private set; }
     }
 }

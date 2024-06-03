@@ -1,11 +1,18 @@
 ﻿using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
+using Infrastructure.Auth;
+using Infrastructure.Serializers;
 using Unity.Services.CloudSave;
 
-namespace Infrastructure.DataStorage.Implementations
+namespace Infrastructure.DataStorage
 {
     public class CloudSaveDataStorage<T> : IDataStorage<T>
     {
+        private const string SaveDataKey = "saveData";
+        
+        private readonly AuthService _authService;
+        private readonly IDataSerializer _dataSerializer;
+        
         public CloudSaveDataStorage(AuthService authService, IDataSerializer dataSerializer)
         {
             _authService = authService;
@@ -38,10 +45,5 @@ namespace Infrastructure.DataStorage.Implementations
         {
             await CloudSaveService.Instance.Data.Player.DeleteAllAsync();
         }
-
-        private const string SaveDataKey = "saveData";
-        
-        private readonly AuthService _authService;
-        private readonly IDataSerializer _dataSerializer;
     }
 }

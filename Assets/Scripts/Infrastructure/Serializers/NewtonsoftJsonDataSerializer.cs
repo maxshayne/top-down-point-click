@@ -1,10 +1,9 @@
 ﻿using System;
-using Infrastructure.DataStorage;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
 using UnityEngine;
 
-namespace Infrastructure.Serializers.Implementations
+namespace Infrastructure.Serializers
 {
     [UsedImplicitly]
     public class NewtonsoftJsonDataSerializer : IDataSerializer

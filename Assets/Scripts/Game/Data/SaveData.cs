@@ -9,9 +9,17 @@ namespace Game.Data
     [JsonObject(MemberSerialization.Fields)]
     public class SaveData
     {
+        [NonSerialized]
+        private List<Vector3> _cached = new();
+        
+        private List<SerializableVector3> _points = new();
+        private SerializableVector3 _localPosition;
+        private SerializableVector3 _localEulerRotation;
+        private SerializableVector3 _localScale;
+        
         public List<Vector3> GetPoints()
         {
-            _cached ??= _points.Select<SerializableVector3, Vector3>(x => x).ToList();
+            _cached = _points.Select<SerializableVector3, Vector3>(x => x).ToList();
             return _cached;
         }
 
@@ -38,13 +46,5 @@ namespace Game.Data
             get => _localScale;
             set => _localScale = value;
         }
-        
-        [NonSerialized]
-        private List<Vector3> _cached;
-        
-        private List<SerializableVector3> _points = new();
-        private SerializableVector3 _localPosition;
-        private SerializableVector3 _localEulerRotation;
-        private SerializableVector3 _localScale;
     }
 }

@@ -9,6 +9,9 @@ namespace Game.PlayerInput
     [UsedImplicitly]
     public class DefaultPlayerInput : IPlayerInput, IDisposable
     {
+        private readonly List<IInputListener> _listeners = new();
+        private readonly Controls _controls;
+        
         public DefaultPlayerInput()
         {
             _controls = new Controls();
@@ -44,8 +47,5 @@ namespace Game.PlayerInput
                 inputListener.NotifyInput(clickPosition);
             }
         }
-        
-        private readonly List<IInputListener> _listeners = new();
-        private readonly Controls _controls;
     }
 }

@@ -6,6 +6,10 @@ namespace Game.Gameplay
 {
     public class GameUIView : MonoBehaviour
     {
+        [SerializeField] private Button exitButton;
+        
+        private GamePresenter _presenter;
+        
         [Inject]
         private void Construct(GamePresenter presenter)
         {
@@ -14,7 +18,7 @@ namespace Game.Gameplay
         
         private void Awake()
         {
-            m_ExitButton.onClick.AddListener(OnExit);
+            exitButton.onClick.AddListener(OnExit);
         }
         
         private void OnExit()
@@ -24,11 +28,7 @@ namespace Game.Gameplay
 
         private void OnDestroy()
         {
-            m_ExitButton.onClick.RemoveAllListeners();
+            exitButton.onClick.RemoveAllListeners();
         }
-        
-        [SerializeField] private Button m_ExitButton;
-        
-        private GamePresenter _presenter;
     }
 }

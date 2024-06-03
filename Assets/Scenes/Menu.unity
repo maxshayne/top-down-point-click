@@ -558,8 +558,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bfbbd8429e147c0b039a50784ef22f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_StartButton: {fileID: 2026778134}
-  m_ClearSaveButton: {fileID: 1293668452}
+  startButton: {fileID: 2026778134}
+  clearSaveButton: {fileID: 1293668452}
 --- !u!1 &559784595
 GameObject:
   m_ObjectHideFlags: 0
@@ -981,7 +981,7 @@ GameObject:
   - component: {fileID: 1843821690}
   - component: {fileID: 1843821689}
   m_Layer: 0
-  m_Name: _Entry
+  m_Name: MenuContext
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1000,7 +1000,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parentReference:
-    TypeName: 
+    TypeName: Game.Root.RootLifetimeScope
   autoRun: 1
   autoInjectGameObjects: []
 --- !u!4 &1843821690

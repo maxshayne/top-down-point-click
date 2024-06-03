@@ -6,6 +6,11 @@ namespace Game.Menu
 {
     public class MenuUIView : MonoBehaviour
     {
+        [SerializeField] private Button startButton;
+        [SerializeField] private Button clearSaveButton;
+        
+        private MenuPresenter _presenter;
+        
         [Inject]
         private void Construct(MenuPresenter presenter)
         {
@@ -14,8 +19,8 @@ namespace Game.Menu
 
         private void Awake()
         {
-            m_StartButton.onClick.AddListener(Load);
-            m_ClearSaveButton.onClick.AddListener(OnClearSave);
+            startButton.onClick.AddListener(Load);
+            clearSaveButton.onClick.AddListener(OnClearSave);
         }
 
         private void OnClearSave()
@@ -30,13 +35,8 @@ namespace Game.Menu
 
         private void OnDestroy()
         {
-            m_StartButton.onClick.RemoveAllListeners();
-            m_ClearSaveButton.onClick.RemoveAllListeners();
+            startButton.onClick.RemoveAllListeners();
+            clearSaveButton.onClick.RemoveAllListeners();
         }
-
-        [SerializeField] private Button m_StartButton;
-        [SerializeField] private Button m_ClearSaveButton;
-        
-        private MenuPresenter _presenter;
     }
 }

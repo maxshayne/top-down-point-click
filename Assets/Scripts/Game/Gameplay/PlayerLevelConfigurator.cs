@@ -7,6 +7,9 @@ namespace Game.Gameplay
     [UsedImplicitly]
     public class PlayerLevelConfigurator 
     {
+        private readonly NavMeshAgent _playerAgent;
+        private readonly PlayerConfiguration _playerConfiguration;
+        
         public PlayerLevelConfigurator(
             NavMeshAgent playerAgent, 
             PlayerConfiguration playerConfiguration)
@@ -20,8 +23,5 @@ namespace Game.Gameplay
             _playerAgent.speed = _playerConfiguration.MoveSpeed;
             _playerAgent.angularSpeed = _playerConfiguration.RotationSpeed;
         }
-        
-        private readonly NavMeshAgent _playerAgent;
-        private readonly PlayerConfiguration _playerConfiguration;
     }
 }

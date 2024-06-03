@@ -9,6 +9,9 @@ namespace Game.PlayerMovement
     [UsedImplicitly]
     public class WaypointsProvider : IPathProvider
     {
+        private readonly InputConfiguration _inputConfiguration;
+        private readonly Queue<Vector3> _pathQueue = new();
+        
         public WaypointsProvider(InputConfiguration inputConfiguration)
         {
             _inputConfiguration = inputConfiguration;
@@ -30,8 +33,5 @@ namespace Game.PlayerMovement
         public void RemovePoint() => _pathQueue.Dequeue();
         
         public List<Vector3> GetPath() => _pathQueue.ToList();
-
-        private readonly InputConfiguration _inputConfiguration;
-        private readonly Queue<Vector3> _pathQueue = new();
     }
 }
