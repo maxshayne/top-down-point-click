@@ -1,6 +1,7 @@
 ﻿using System;
 using Game.Root.Configuration;
-using Infrastructure.DataStorage.Implementations;
+using Infrastructure.Auth;
+using Infrastructure.Serializers;
 using JetBrains.Annotations;
 
 namespace Infrastructure.DataStorage

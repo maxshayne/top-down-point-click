@@ -10,6 +10,9 @@ namespace Game.Gameplay
 {
     public class GameLifetimeScope : LifetimeScope
     {
+        [SerializeField] private NavMeshAgent navMeshAgent;
+        [SerializeField] private Camera worldCamera;
+        
         protected override void Configure(IContainerBuilder builder)
         {
             builder.RegisterEntryPoint<GameEntry>();
@@ -25,8 +28,8 @@ namespace Game.Gameplay
 
         private void RegisterGameServices(IContainerBuilder builder)
         {
-            builder.RegisterComponent(m_NavMeshAgent);
-            builder.RegisterComponent(m_WorldCamera);
+            builder.RegisterComponent(navMeshAgent);
+            builder.RegisterComponent(worldCamera);
             builder.Register<ClickMovementController>(Lifetime.Scoped);
             builder.Register<IPlayerInput, DefaultPlayerInput>(Lifetime.Scoped);
             builder.Register<IPathProvider, WaypointsProvider>(Lifetime.Scoped);
@@ -45,8 +48,5 @@ namespace Game.Gameplay
                 resolver => resolver.Resolve<ConfigurationData>().InputConfiguration,
                 Lifetime.Scoped);
         }
-        
-        [SerializeField] private NavMeshAgent m_NavMeshAgent;
-        [SerializeField] private Camera m_WorldCamera;
     }
 }

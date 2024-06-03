@@ -6,8 +6,8 @@ namespace Game.Root.Configuration
     [Serializable]
     public class InputConfiguration
     {
-        public int MaxPointsQueue => m_MaxPointsQueue;
+        [SerializeField] private int maxPointsQueue;
         
-        [SerializeField] private int m_MaxPointsQueue;
+        public int MaxPointsQueue => maxPointsQueue;
     }
 }

@@ -1,17 +1,31 @@
 ﻿using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using Game.Root.Configuration;
+using Infrastructure.AssetManagement;
 using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 
-namespace Game.Root.SceneManagement
+namespace Infrastructure.SceneManagement
 {
     [UsedImplicitly]
     public class SceneLoader : ISceneLoader
     {
-        public SceneLoader(ConfigurationData configurationData)
+        private const int FakeLoadingDelayInMilliseconds = 3000;
+        
+        private readonly Dictionary<SceneKey, string> _sceneMap = new ()
         {
+            {SceneKey.Menu, "Assets/Scenes/Menu.unity"},
+            {SceneKey.Game, "Assets/Scenes/Game.unity"}
+        };
+        private readonly IAssetProvider _assetProvider;
+        private readonly ConfigurationData _configurationData;
+        
+        private CanvasGroup _loadingCanvasGroup;
+        
+        public SceneLoader(IAssetProvider assetProvider, ConfigurationData configurationData)
+        {
+            _assetProvider = assetProvider;
             _configurationData = configurationData;
             Configure();
         }
@@ -37,24 +51,13 @@ namespace Game.Root.SceneManagement
             _loadingCanvasGroup.blocksRaycasts = false;
             IsSceneLoaded = true;
         }
-        
+
         private async void Configure()
         {
-            var cg = await _configurationData.LoadingScreen.LoadAssetAsync<GameObject>();
+            var cg = await _assetProvider.LoadAsset<GameObject>(_configurationData.LoadingScreen.AssetGUID);
             _loadingCanvasGroup = Object.Instantiate(cg.GetComponent<CanvasGroup>(), null);
             _loadingCanvasGroup.alpha = 0;
             Object.DontDestroyOnLoad(_loadingCanvasGroup);
         }
-
-        private readonly Dictionary<SceneKey, string> _sceneMap = new ()
-        {
-            {SceneKey.Menu, "Assets/Scenes/Menu.unity"},
-            {SceneKey.Game, "Assets/Scenes/Game.unity"}
-        };
-
-        private const int FakeLoadingDelayInMilliseconds = 3000;
-        
-        private readonly ConfigurationData _configurationData;
-        private CanvasGroup _loadingCanvasGroup;
     }
 }

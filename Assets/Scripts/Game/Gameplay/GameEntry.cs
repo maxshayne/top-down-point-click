@@ -1,8 +1,8 @@
 using Cysharp.Threading.Tasks;
 using Game.Data;
 using Game.PlayerMovement;
-using Game.Root;
 using Infrastructure.DataStorage;
+using Infrastructure.SceneManagement;
 using JetBrains.Annotations;
 using VContainer.Unity;
 
@@ -11,6 +11,13 @@ namespace Game.Gameplay
     [UsedImplicitly]
     public class GameEntry : IStartable
     {
+        private readonly ClickMovementController _clickMovementController;
+        private readonly SaveLoadPresenter _saveLoadPresenter;
+        private readonly ISceneLoader _sceneLoader;
+        private readonly IDataStorage<SaveData> _dataStorage;
+        private readonly GameLevelConfigurator _gameLevelConfigurator;
+        private readonly PlayerLevelConfigurator _playerLevelConfigurator;
+        
         public GameEntry(
             ISceneLoader sceneLoader,
             IDataStorage<SaveData> dataStorage,
@@ -37,12 +44,5 @@ namespace Game.Gameplay
             _playerLevelConfigurator.Configure();
             _clickMovementController.Initialize();
         }
-
-        private readonly ClickMovementController _clickMovementController;
-        private readonly SaveLoadPresenter _saveLoadPresenter;
-        private readonly ISceneLoader _sceneLoader;
-        private readonly IDataStorage<SaveData> _dataStorage;
-        private readonly GameLevelConfigurator _gameLevelConfigurator;
-        private readonly PlayerLevelConfigurator _playerLevelConfigurator;
     }
 }

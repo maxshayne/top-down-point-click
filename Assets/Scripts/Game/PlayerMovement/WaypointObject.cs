@@ -6,6 +6,9 @@ namespace Game.PlayerMovement
 {
     public class WaypointObject : MonoBehaviour
     {
+        private Action _callback;
+        private string _colTag;
+        
         public void Configure(string colTag)
         {
             _colTag = colTag;
@@ -29,8 +32,5 @@ namespace Game.PlayerMovement
             gameObject.SetActive(false);
             EventBus.RaiseEvent<IWaypointReachHandler>(handler=>handler.WaypointReached());
         }
-        
-        private Action _callback;
-        private string _colTag;
     }
 }

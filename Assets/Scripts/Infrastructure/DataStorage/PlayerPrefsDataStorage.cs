@@ -1,10 +1,15 @@
 using Cysharp.Threading.Tasks;
+using Infrastructure.Serializers;
 using UnityEngine;
 
-namespace Infrastructure.DataStorage.Implementations
+namespace Infrastructure.DataStorage
 {
     public class PlayerPrefsDataStorage<T> : IDataStorage<T>
     {
+        private readonly IDataSerializer _serializer;
+        
+        private const string SaveDataKey = "savedata";
+        
         public PlayerPrefsDataStorage(IDataSerializer serializer)
         {
             _serializer = serializer;
@@ -33,8 +38,5 @@ namespace Infrastructure.DataStorage.Implementations
         {
             PlayerPrefs.DeleteAll();
         }
-        
-        private readonly IDataSerializer _serializer;
-        private const string SaveDataKey = "savedata";
     }
 }

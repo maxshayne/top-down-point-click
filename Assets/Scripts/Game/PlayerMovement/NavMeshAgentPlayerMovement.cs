@@ -7,6 +7,13 @@ namespace Game.PlayerMovement
     [UsedImplicitly]
     public class NavMeshAgentPlayerMovement : IPlayerMovement
     {
+        private const string PlayerTag = "Player";
+
+        private readonly WaypointObject _triggerObject;
+        private readonly NavMeshAgent _navMeshAgent;
+        
+        private bool _hasTarget;
+        
         public NavMeshAgentPlayerMovement(NavMeshAgent navMeshAgent)
         {
             _navMeshAgent = navMeshAgent;
@@ -30,12 +37,5 @@ namespace Game.PlayerMovement
         {
             _triggerObject.MoveToPoint(newPos);
         }
-
-        private const string PlayerTag = "Player";
-
-        private readonly WaypointObject _triggerObject;
-        private readonly NavMeshAgent _navMeshAgent;
-        
-        private bool _hasTarget;
     }
 }

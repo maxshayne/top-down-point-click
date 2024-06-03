@@ -8,6 +8,11 @@ namespace Game.Gameplay
     [UsedImplicitly]
     public class SaveLoadPresenter
     {
+        private readonly NavMeshAgent _playerAgent;
+        private readonly IPathProvider _pathProvider;
+        
+        private SaveData _saveData;
+        
         public SaveLoadPresenter(NavMeshAgent playerAgent, IPathProvider pathProvider)
         {
             _playerAgent = playerAgent;
@@ -39,10 +44,5 @@ namespace Game.Gameplay
             _saveData.LocalScale = transform.localScale;
             return _saveData;
         }
-        
-        private readonly NavMeshAgent _playerAgent;
-        private readonly IPathProvider _pathProvider;
-        
-        private SaveData _saveData;
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace Game.Root
+﻿namespace Infrastructure.SceneManagement
 {
     public interface ISceneLoader
     {

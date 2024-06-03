@@ -6,10 +6,10 @@ namespace Game.Root.Configuration
     [Serializable]
     public class PlayerConfiguration
     {
-        public float MoveSpeed => m_MoveSpeed;
-        public float RotationSpeed => m_RotationSpeed;
+        [SerializeField] private float moveSpeed;
+        [SerializeField] private float rotationSpeed;
         
-        [SerializeField] private float m_MoveSpeed;
-        [SerializeField] private float m_RotationSpeed;
+        public float MoveSpeed => moveSpeed;
+        public float RotationSpeed => rotationSpeed;
     }
 }

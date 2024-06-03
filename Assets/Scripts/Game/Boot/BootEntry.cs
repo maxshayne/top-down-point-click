@@ -1,7 +1,8 @@
-﻿using JetBrains.Annotations;
+﻿using Infrastructure.SceneManagement;
+using JetBrains.Annotations;
 using VContainer.Unity;
 
-namespace Game.Root
+namespace Game.Boot
 {
     [UsedImplicitly]
     public class BootEntry : IInitializable

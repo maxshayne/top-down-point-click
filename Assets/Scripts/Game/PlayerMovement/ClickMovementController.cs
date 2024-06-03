@@ -9,6 +9,11 @@ namespace Game.PlayerMovement
     [UsedImplicitly]
     public class ClickMovementController : IInputListener,  IWaypointReachHandler, IDisposable
     {
+        private readonly IInputValidator _inputValidator;
+        private readonly IPathProvider _pathProvider;
+        private readonly IPlayerMovement _playerMovement;
+        private readonly IPlayerInput _playerInput;
+        
         public ClickMovementController(
             IInputValidator inputValidator,
             IPathProvider pathProvider,
@@ -55,10 +60,5 @@ namespace Game.PlayerMovement
             if (!_pathProvider.TryPeekNextPoint(out var pos)) return;
             _playerMovement.CreateDestination(pos);
         }
-
-        private readonly IInputValidator _inputValidator;
-        private readonly IPathProvider _pathProvider;
-        private readonly IPlayerMovement _playerMovement;
-        private readonly IPlayerInput _playerInput;
     }
 }

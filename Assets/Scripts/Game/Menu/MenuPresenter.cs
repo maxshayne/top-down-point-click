@@ -1,6 +1,6 @@
 using Game.Data;
-using Game.Root;
 using Infrastructure.DataStorage;
+using Infrastructure.SceneManagement;
 using JetBrains.Annotations;
 
 namespace Game.Menu
@@ -8,6 +8,9 @@ namespace Game.Menu
     [UsedImplicitly]
     public class MenuPresenter
     {
+        private readonly ISceneLoader _sceneLoader;
+        private readonly IDataStorage<SaveData> _dataStorage;
+        
         public MenuPresenter(ISceneLoader sceneLoader, IDataStorage<SaveData> dataStorage)
         {
             _sceneLoader = sceneLoader;
@@ -23,8 +26,5 @@ namespace Game.Menu
         {
             _dataStorage.Clear();
         }
-        
-        private readonly ISceneLoader _sceneLoader;
-        private readonly IDataStorage<SaveData> _dataStorage;
     }
 }

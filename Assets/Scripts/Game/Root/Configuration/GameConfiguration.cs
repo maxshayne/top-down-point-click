@@ -6,13 +6,9 @@ namespace Game.Root.Configuration
     [Serializable]
     public class GameConfiguration
     {
-        public DataStorageType GetDataStorageType()
-        {
-            return m_SavingSystem;
-        }
+        [SerializeField] private DataStorageType savingSystem;
         
-        [SerializeField]
-        private DataStorageType m_SavingSystem;
+        public DataStorageType GetDataStorageType() => savingSystem;
     }
 
     public enum DataStorageType

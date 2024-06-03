@@ -7,8 +7,8 @@ namespace Game.Root.Configuration
     [Serializable]
     public class LevelConfiguration
     {
-        public AssetReference LevelAsset => m_LevelAsset;
+        [SerializeField] private AssetReference levelAsset;
         
-        [SerializeField] private AssetReference m_LevelAsset;
+        public AssetReference LevelAsset => levelAsset;
     }
 }
